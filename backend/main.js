@@ -29,14 +29,14 @@ async function getQuery() {
     query: "I want to eat very cheap sushi",
   };
 
-  service.textSearch(request, callback);
+  service.textSearch(request, searchResponse);
 }
 
-function callback(results, status) {
+function searchResponse(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
       var place = results[i];
-      // console.log(place);
+      console.log(place);
     }
   }
 }
@@ -48,6 +48,7 @@ async function getCoords(results, status) {
       lng: results[0].geometry.location.lng()
     };
   } else {
+    // TODO: error handling
     alert("Geocode was not successful for the following reason: " + status);
   }
 }
