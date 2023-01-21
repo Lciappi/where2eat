@@ -22,6 +22,7 @@ import { handleURLQueries } from 'src/@core/layouts/utils'
 
 // ** Styled Components
 const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
+
   width: '100%',
   borderTopRightRadius: 100,
   borderBottomRightRadius: 100,
@@ -50,6 +51,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
   // ** Hooks
   const router = useRouter()
   const IconTag = item.icon
+
 
   const isNavLinkActive = () => {
     if (router.pathname === item.path || handleURLQueries(router, item.path)) {
