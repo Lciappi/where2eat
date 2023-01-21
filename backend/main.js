@@ -41,7 +41,7 @@ async function searchResponse(results, status) {
       var place = results[i];
       console.log(place);
       // console.log(await place.opening_hours.isOpen());
-      const isOpenAtTime = await place.opening_hours.isOpen(new Date(time));
+      const isOpenAtTime = place.opening_hours.isOpen(new Date(time));
       // console.log(isOpenAtTime);
     }
   }
@@ -50,7 +50,6 @@ async function searchResponse(results, status) {
     fields: ['opening_hours'],
     }, function (place, status) {
       if (status !== 'OK') return; // something went wrong
-      console.log(place.opening_hours.isOpen());
       const isOpenAtTime = place.opening_hours.isOpen(new Date('December 17, 2020 03:24:00'));
       console.log(isOpenAtTime);
   
