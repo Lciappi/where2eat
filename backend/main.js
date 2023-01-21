@@ -4,13 +4,16 @@ var service;
 var infowindow;
 
 var coords;
+var query;
+var time = 'December 17, 2020 03:24:00';
+var address;
 
 async function getQuery() {
   geocoder = new google.maps.Geocoder();
 
-  let prompt = document.currentScript.getAttribute("prompt");
-  let address = document.currentScript.getAttribute("address");
-  let time = document.currentScript.getAttribute("time");
+  query = document.currentScript.getAttribute("prompt");
+  address = document.currentScript.getAttribute("address");
+  // time = document.currentScript.getAttribute("time");
 
   await geocoder.geocode({ address: address }, function(results, status) {getCoords(results, status)});
 
@@ -25,20 +28,37 @@ async function getQuery() {
 
   var request = {
     location: location,
-    radius: "500",
+    radius: "1000",
     query: "I want to eat very cheap sushi",
   };
 
-  service.textSearch(request, searchResponse);
+  await service.textSearch(request, searchResponse);
 }
 
-function searchResponse(results, status) {
+async function searchResponse(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
       var place = results[i];
       console.log(place);
+      // console.log(await place.opening_hours.isOpen());
+      const isOpenAtTime = await place.opening_hours.isOpen(new Date(time));
+      // console.log(isOpenAtTime);
     }
   }
+  await service.getDetails({
+    placeId: 'ChIJLX5RgE5xhlQRdaZexuM3W-w',
+    fields: ['opening_hours'],
+    }, function (place, status) {
+      if (status !== 'OK') return; // something went wrong
+      console.log(place.opening_hours.isOpen());
+      const isOpenAtTime = place.opening_hours.isOpen(new Date('December 17, 2020 03:24:00'));
+      console.log(isOpenAtTime);
+  
+      const isOpenNow = place.opening_hours.isOpen();
+      if (isOpenNow) {
+          // We know it's open.
+      }
+  });
 }
 
 async function getCoords(results, status) {
@@ -51,4 +71,8 @@ async function getCoords(results, status) {
     // TODO: error handling
     alert("Geocode was not successful for the following reason: " + status);
   }
+}
+
+function formatTime(time) {
+
 }
