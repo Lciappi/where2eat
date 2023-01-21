@@ -45,7 +45,7 @@ function getCoords(address) {
         fields: ['geometry'],
       };
 
-    service.findPlaceFromQuery(request, function(results, status) {
+    service.textSearch(request, function(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           return results[0].geometry.location;
         }
