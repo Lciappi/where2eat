@@ -3,6 +3,8 @@ var geocoder;
 var service;
 var infowindow;
 
+var coords;
+
 async function getQuery() {
   geocoder = new google.maps.Geocoder();
 
@@ -10,10 +12,9 @@ async function getQuery() {
   let address = document.currentScript.getAttribute("address");
   let time = document.currentScript.getAttribute("time");
 
-  let coords = await getCoords(address);
-  console.log(coords);
+  await geocoder.geocode({ address: address }, function(results, status) {getCoords(results, status)});
 
-  var location = new google.maps.LatLng(49.2887722, -123.1217156);
+  var location = new google.maps.LatLng(coords.lat, coords.lng);
 
   map = new google.maps.Map(document.getElementById("map"), {
     center: location,
@@ -40,20 +41,13 @@ function callback(results, status) {
   }
 }
 
-async function getCoords(address) {
-  return geocoder.geocode({ address: address }, function (results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      console.log(results);
-      var lat = results[0].geometry.location.lat();
-      var lng = results[0].geometry.location.lng();
-      var returnBody = {
-        lat: lat,
-        lng: lng,
-      };
-      console.log(returnBody);
-      return returnBody;
-    } else {
-      alert("Geocode was not successful for the following reason: " + status);
-    }
-  });
+async function getCoords(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    coords = {
+      lat: results[0].geometry.location.lat(),
+      lng: results[0].geometry.location.lng()
+    };
+  } else {
+    alert("Geocode was not successful for the following reason: " + status);
+  }
 }
