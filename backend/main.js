@@ -3,10 +3,14 @@ var geocoder;
 var service;
 var infowindow;
 
-var coords;
 var query;
 var time = 'December 17, 2020 03:24:00';
 var address;
+
+var coords;
+var placesObj = {};
+
+const MAX_RESULTS = 5;
 
 async function getQuery() {
   geocoder = new google.maps.Geocoder();
@@ -37,27 +41,17 @@ async function getQuery() {
 
 async function searchResponse(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
+    const maxResults = (MAX_RESULTS > results.length)? results.length : MAX_RESULTS;
+    placesObj['places'] = [];
+
+    for (var i = 0; i < maxResults; i++) {
       var place = results[i];
-      console.log(place);
-      // console.log(await place.opening_hours.isOpen());
-      const isOpenAtTime = place.opening_hours.isOpen(new Date(time));
-      // console.log(isOpenAtTime);
+      placesObj.places.push(place);
     }
+  } else {
+    // TODO: error handling
+    alert("Search was not successful for the following reason: " + status);
   }
-  await service.getDetails({
-    placeId: 'ChIJLX5RgE5xhlQRdaZexuM3W-w',
-    fields: ['opening_hours'],
-    }, function (place, status) {
-      if (status !== 'OK') return; // something went wrong
-      const isOpenAtTime = place.opening_hours.isOpen(new Date('December 17, 2020 03:24:00'));
-      console.log(isOpenAtTime);
-  
-      const isOpenNow = place.opening_hours.isOpen();
-      if (isOpenNow) {
-          // We know it's open.
-      }
-  });
 }
 
 async function getCoords(results, status) {
@@ -72,6 +66,6 @@ async function getCoords(results, status) {
   }
 }
 
-function formatTime(time) {
-
+function isOpen(place) {
+  return place.opening_hours.open_now;
 }
