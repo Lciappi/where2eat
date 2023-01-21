@@ -10,20 +10,16 @@ async function getQuery() {
   let address = document.currentScript.getAttribute("address");
   let time = document.currentScript.getAttribute("time");
 
-  console.log("Prompt: " + prompt);
-  console.log("Address: " + prompt);
-  console.log("Time: " + prompt);
-
   let coords = await getCoords(address);
   console.log(coords);
 
   var location = new google.maps.LatLng(49.2887722, -123.1217156);
-  
+
   map = new google.maps.Map(document.getElementById("map"), {
     center: location,
     zoom: 15,
   });
-  
+
   service = new google.maps.places.PlacesService(map);
 
   var request = {
@@ -45,19 +41,19 @@ function callback(results, status) {
 }
 
 async function getCoords(address) {
-  geocoder.geocode({'address': address}, function(results, status) {
+  return geocoder.geocode({ address: address }, function (results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       console.log(results);
       var lat = results[0].geometry.location.lat();
       var lng = results[0].geometry.location.lng();
       var returnBody = {
-        'lat': lat,
-        'lng': lng
+        lat: lat,
+        lng: lng,
       };
       console.log(returnBody);
       return returnBody;
     } else {
-      alert('Geocode was not successful for the following reason: ' + status);
+      alert("Geocode was not successful for the following reason: " + status);
     }
   });
 }
