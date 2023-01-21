@@ -38,3 +38,17 @@ function callback(results, status) {
     }
   }
 }
+
+function getCoords(address) {
+    const request = {
+        query: address,
+        fields: ['geometry'],
+      };
+    
+
+    service.findPlaceFromQuery(request, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          return results[0].geometry.location;
+        }
+      });
+}
