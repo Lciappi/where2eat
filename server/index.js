@@ -14,7 +14,6 @@ const app = express();
 var jsonParser = bodyParser.json();
 
 app.post("/recommend", jsonParser, (req, res) => {
-  console.log("params: ", req.query);
   let query = encodeURIComponent(req.query.query);
   const address = req.query.address;
   let radius = 500;
