@@ -18,7 +18,6 @@ import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import { debounce } from '@mui/material/utils';
 
-
 // This key was created specifically for the demo in mui.com.
 // You need to create a new one for your application.
 const GOOGLE_MAPS_API_KEY = 'AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M';
@@ -56,8 +55,8 @@ export default function GoogleMaps() {
 
     loaded.current = true;
   }
-
-  const fetch = React.useMemo(
+  
+  const bad_fetch = React.useMemo(
     () =>
       debounce((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
@@ -81,7 +80,7 @@ export default function GoogleMaps() {
       return undefined;
     }
 
-    fetch({ input: inputValue }, (results) => {
+    bad_fetch({ input: inputValue }, (results) => {
       if (active) {
         let newOptions = [];
 
@@ -100,7 +99,7 @@ export default function GoogleMaps() {
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [value, inputValue, bad_fetch]);
 
   const router = useRouter()
 
@@ -113,7 +112,22 @@ export default function GoogleMaps() {
   };
 
   function move(){
-    router.push('/group/eat')
+    console.log('==> Button Pressed <==')
+    console.log('query: ', prompt)
+    console.log('time: ', time)
+    console.log('address: ', value.description)
+
+    fetch('http://localhost:5050/recommend', {
+        method: "POST",
+        mode:'no-cors',
+        headers: { "content-type": "application/json"},
+        body: JSON.stringify({ query: {prompt}, time:{time}, address:{value} })
+      })
+      .then((resp) => {
+        console.log(resp);
+      })
+    
+    //router.push('/group/eat')
   }
 
 
