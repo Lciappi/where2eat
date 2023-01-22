@@ -27,6 +27,14 @@ class CustomDocument extends Document {
         <body>
           <Main />
           <NextScript />
+            <div id="map"></div>
+            <script src="/images/main.js"></script>
+            <script async defer
+                  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M&libraries=places&callback=getQuery" 
+                  prompt="very cheap indian restaurants"
+                  address="5947 Highbury Street"
+                  time="13:00">
+            </script>
         </body>
       </Html>
     )

@@ -14,31 +14,28 @@ import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 import CellphoneLink from 'mdi-material-ui/CellphoneLink'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
+import { Alarm } from 'mdi-material-ui';
+import { Calendar } from 'mdi-material-ui';
+import AccountDetails from 'mdi-material-ui/AccountDetails'
 
 const salesData = [
   {
-    stats: '245k',
-    title: 'Sales',
+    stats: '17:00',
+    title: 'Time to meet',
     color: 'primary',
-    icon: <TrendingUp sx={{ fontSize: '1.75rem' }} />
+    icon: <Alarm sx={{ fontSize: '1.75rem' }} />
   },
   {
-    stats: '12.5k',
-    title: 'Customers',
-    color: 'success',
-    icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
+    stats: '21-02-2022',
+    title: 'Date',
+    color: 'secondary',
+    icon: <Calendar sx={{ fontSize: '1.75rem' }} />
   },
   {
-    stats: '1.54k',
+    stats: 'affordable noodle place',
     color: 'warning',
-    title: 'Products',
-    icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '$88k',
-    color: 'info',
-    title: 'Revenue',
-    icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />
+    title: 'Prompt',
+    icon: <AccountDetails sx={{ fontSize: '1.75rem' }} />
   }
 ]
 
@@ -72,32 +69,13 @@ const StatisticsCard = () => {
   return (
     <Card>
       <CardHeader
-        title='Statistics Card'
-        action={
-          <IconButton size='small' aria-label='settings' className='card-more-options' sx={{ color: 'text.secondary' }}>
-            <DotsVertical />
-          </IconButton>
-        }
-        subheader={
-          <Typography variant='body2'>
-            <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-              Total 48.5% growth
-            </Box>{' '}
-            😎 this month
-          </Typography>
-        }
-        titleTypographyProps={{
-          sx: {
-            mb: 2.5,
-            lineHeight: '2rem !important',
-            letterSpacing: '0.15px !important'
-          }
-        }}
+        title="Today's Options"
       />
-      <CardContent sx={{ pt: theme => `${theme.spacing(3)} !important` }}>
+      <CardContent sx={{ pt: theme => `${theme.spacing(0)} !important` }}>
         <Grid container spacing={[5, 0]}>
           {renderStats()}
         </Grid>
+        
       </CardContent>
     </Card>
   )

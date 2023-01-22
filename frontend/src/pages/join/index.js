@@ -25,7 +25,7 @@ const Join = () => {
     <Grid container spacing={6}>
       <Grid item xs={3}/>
       <Grid item xs={6}>
-        <TextField fullWidth label="Enter Group Code" id="fullWidth" onChange={(event) => {setGroupCode(event.target.value)}} />
+        <TextField fullWidth label="Enter Group Code" id="math" onChange={(event) => {setGroupCode(event.target.value)}} />
         <br/>
       </Grid>
 
