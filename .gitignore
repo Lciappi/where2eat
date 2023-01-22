@@ -1,4 +1,9 @@
 server/node_modules/*
 frontend/.next/*
 frontend/node_modules/*
+<<<<<<< HEAD
 node_modules/
+=======
+node_modules/*
+server/.env
+>>>>>>> d33c7ae7ae9dda57e543e64288316f36cd0eff66
