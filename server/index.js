@@ -21,6 +21,8 @@ var jsonParser = bodyParser.json();
 app.get("/results", (req, res) => {
   res.type("application/json");
   res.status(200);
+  ROOMS[req.query.room]['best'] = getBest(ROOMS[req.query.room].places);
+  console.log(ROOMS[req.query.room]);
   return res.json(ROOMS[req.query.room]);
 });
 
@@ -43,7 +45,8 @@ app.post("/recommend", jsonParser, (req, res) => {
 
   res.type("application/json");
   const query = req.query.query;
-  const time = req.query.time;
+  // const time = req.query.time;
+  const time = '2014-08-18 21:11:54';
   const address = req.query.address;
   const radius = "500";
   const encodedQuery = encodeURIComponent(query);
