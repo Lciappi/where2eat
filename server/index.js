@@ -14,10 +14,10 @@ const app = express();
 var jsonParser = bodyParser.json();
 
 app.post("/recommend", jsonParser, (req, res) => {
-  console.log("body: ", req.body);
-  let query = encodeURIComponent(req.body.query);
-  const address = req.body.address;
-  const radius = req.body.radius;
+  console.log("params: ", req.query);
+  let query = encodeURIComponent(req.query.query);
+  const address = req.query.address;
+  let radius = 500;
 
   getCoords(address).then((location) => {
     if (location == null) {
@@ -38,7 +38,7 @@ app.post("/recommend", jsonParser, (req, res) => {
     axios(config)
       .then(function (response) {
         trimResults(response.data.results);
-        res.json({ first: "first place" });
+        res.status(200).send(response.data.results);
       })
       .catch((error) => {
         console.err(error);
