@@ -16,8 +16,7 @@ app.get("/recommend", (req, res) => {
 
   getCoords(address).then((location) => {
     if (location == null) {
-      res.status(500);
-      res.json({error: "No address found"});
+      res.status(500).json({error: "No address found"});
     }
     const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${location.lat}%2C${location.lng}&radius=500&key=${API_KEY}`;
 
