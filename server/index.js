@@ -1,5 +1,6 @@
-const express = require("express");
-const axios = require("axios");
+import { isOpen, trimResults } from './helper.js'
+import express from 'express';
+import axios from 'axios';
 
 const PORT = 5050;
 const API_KEY = "AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M";
@@ -9,9 +10,9 @@ const TEXTSEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsear
 const app = express();
 
 app.get("/recommend", (req, res) => {
-  let query = encodeURIComponent(req.query);
-  const address = req.address;
-  const radius = req.radius;
+  let query = encodeURIComponent(req.body.query);
+  const address = req.body.address;
+  const radius = req.body.radius;
 
   getCoords(address).then((location) => {
     if (location == null) {
@@ -29,6 +30,7 @@ app.get("/recommend", (req, res) => {
 
     axios(config)
       .then(function (response) {
+        trimResults(response.data.results);
         res.json({ first: "first place" });
       })
       .catch(function (error) {

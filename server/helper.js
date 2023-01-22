@@ -66,13 +66,16 @@ async function getCoords(results, status) {
   }
 }
 
-function isOpen(place) {
+export function isOpen(place) {
   return place.opening_hours.open_now;
 }
 
-function trimResults(max, results) {
+export function trimResults(results) {
+  const max =
+    MAX_RESULTS > results.length ? results.length : MAX_RESULTS;
   let currentLength = 0;
   let minRatedIndex = 0;
+  let currPlace;
 
   for (let i = 0; i < results.length; i++) {
     currPlace = results[i];
@@ -89,5 +92,15 @@ function trimResults(max, results) {
     }
 
     currentLength++;
+  }
+}
+
+function getMinRatedIndex() {
+  let currMin = placesObj.places[0].rating;
+  let minRatedIndex = 0;
+  for (let i = 0; i < places.length; i++) {
+    if (places[i].rating < currMin) {
+      minRatedIndex = i;
+    }
   }
 }
