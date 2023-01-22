@@ -19,7 +19,7 @@ app.use(cors());
 var jsonParser = bodyParser.json();
 
 app.post("/vote", (req, res) => {
-  ROOMS[req.query.room].votes[req.query.place][req.query.voteIdx] += 1;
+  ROOMS[req.query.room].places[req.query.place].votes[req.query.voteIdx] += 1;
   res.status(200).send("success");
 });
 
