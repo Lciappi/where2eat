@@ -1,4 +1,4 @@
-import { getTopThree, buildResponse, getBest } from "./helper.js";
+import { getTopThree, buildResponse, getBest, updateBest} from "./helper.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
@@ -21,7 +21,15 @@ var jsonParser = bodyParser.json();
 app.get("/results", (req, res) => {
   res.type("application/json");
   res.status(200);
-  ROOMS[req.query.room]['best'] = getBest(ROOMS[req.query.room].places);
+  const best = getBest(ROOMS[req.query.room].places);
+  for (let i = 0; i < 3; i++) {
+    if (i == best) {
+      ROOMS[req.query.room].places[i]['isBest'] = true;
+    } else {
+      ROOMS[req.query.room].places[i]['isBest'] = false;
+    }
+  }
+  
   console.log(ROOMS[req.query.room]);
   return res.json(ROOMS[req.query.room]);
 });
