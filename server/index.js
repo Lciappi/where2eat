@@ -1,4 +1,4 @@
-import { isOpen, getTopThree } from "./helper.js";
+//import { isOpen, trimResults } from "./helper.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
@@ -18,12 +18,9 @@ var jsonParser = bodyParser.json();
 
 app.post("/recommend", jsonParser, (req, res) => {
   res.type("application/json");
-  const query = req.query.query;
-  const time = req.query.time;
+  let query = encodeURIComponent(req.query.query);
   const address = req.query.address;
-  const radius = 500;
-
-  const encodedQuery = encodeURIComponent(query);  
+  let radius = 500;
 
   getCoords(address).then((location) => {
     if (location == null) {
@@ -33,7 +30,7 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     const requestUrl =
       TEXTSEARCH_BASE_URL +
-      `?query=${encodedQuery}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
+      `?query=${query}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
 
     var config = {
       method: "get",
@@ -43,11 +40,17 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     axios(config)
       .then(function (response) {
-        let topThree = getTopThree(response.data.results);
-        topThree = buildResponse(topThree, query, time);
-        res.type("application/json");
-        res.status(200);
-        return res.json(topThree);
+        //const top3 = trimResults(response.data.results);
+        return getDuration(address, [
+          response.data.results[0].formatted_address,
+          response.data.results[1].formatted_address,
+          response.data.results[2].formatted_address,
+        ]).then((durations) => {
+          console.log("Durations: ", durations);
+          res.type("application/json");
+          res.status(200);
+          return res.json(response.data.results);
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -67,6 +70,48 @@ function getCoords(address) {
       return response.data.results[0].geometry.location;
     }
   });
+}
+
+function getDuration(orig, dests) {
+  var config_driving = {
+    method: "get",
+    url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${orig}&destinations=${dests[0]}%7C${dests[1]}%7C${dests[2]}&departure_time=now&key=${API_KEY}`,
+    headers: {},
+  };
+
+  var config_walking = {
+    method: "get",
+    url: `https://maps.googleapis.com/maps/api/distancematrix/json?mode=walking&origins=${orig}&destinations=${dests[0]}%7C${dests[1]}%7C${dests[2]}&departure_time=now&key=${API_KEY}`,
+    headers: {},
+  };
+
+  return axios(config_driving)
+    .then(function (resp_drive) {
+      let dur1 = resp_drive.data.rows[0].elements[0].duration.text;
+      let dur2 = resp_drive.data.rows[0].elements[1].duration.text;
+      let dur3 = resp_drive.data.rows[0].elements[2].duration.text;
+
+      let dist1 = resp_drive.data.rows[0].elements[0].distance.text;
+      let dist2 = resp_drive.data.rows[0].elements[1].distance.text;
+      let dist3 = resp_drive.data.rows[0].elements[2].distance.text;
+
+      let driving_durs = [dur1, dur2, dur3];
+      let dists = [dist1, dist2, dist3];
+      return axios(config_walking).then(function (resp_walk) {
+        let dur4 = resp_walk.data.rows[0].elements[0].duration.text;
+        let dur5 = resp_walk.data.rows[0].elements[1].duration.text;
+        let dur6 = resp_walk.data.rows[0].elements[2].duration.text;
+        let walking_durs = [dur4, dur5, dur6];
+        return {
+          distances: dists,
+          driving_durations: driving_durs,
+          walking_durations: walking_durs,
+        };
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
