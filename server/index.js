@@ -120,9 +120,6 @@ function getJourneyInfo(orig, dests) {
 
   return axios(config_driving)
     .then(function (resp_drive) {
-      console.log("########################");
-      console.log(resp_drive);
-      console.log("########################");
       let dur1 = resp_drive.data.rows[0].elements[0].duration.text;
       let dur2 = resp_drive.data.rows[0].elements[1].duration.text;
       let dur3 = resp_drive.data.rows[0].elements[2].duration.text;
