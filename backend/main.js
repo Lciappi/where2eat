@@ -8,7 +8,7 @@ var time = "December 17, 2020 03:24:00";
 var address;
 
 var coords;
-var placesObj = {};
+var placesObj = { places: {} };
 
 const MAX_RESULTS = 5;
 
@@ -45,12 +45,9 @@ async function searchResponse(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     const maxResults =
       MAX_RESULTS > results.length ? results.length : MAX_RESULTS;
-    placesObj["places"] = [];
+    trimResults(maxResults, results);
 
-    for (var i = 0; i < maxResults; i++) {
-      var place = results[i];
-      placesObj.places.push(place);
-    }
+    console.log(placesObj);
   } else {
     // TODO: error handling
     alert("Search was not successful for the following reason: " + status);
@@ -71,4 +68,26 @@ async function getCoords(results, status) {
 
 function isOpen(place) {
   return place.opening_hours.open_now;
+}
+
+function trimResults(max, results) {
+  let currentLength = 0;
+  let minRatedIndex = 0;
+
+  for (let i = 0; i < results.length; i++) {
+    currPlace = results[i];
+
+    if (currentLength <= max) {
+      placesObj.places[i] = currPlace;
+
+      if (currPlace.rating < placesObj.places[minRatedIndex].rating)
+        minRatedIndex = i;
+    } else {
+      if (currPlace.rating > placesObj.places[minRatedIndex].rating) {
+        placesObj.places[minRatedIndex] = currPlace;
+      }
+    }
+
+    currentLength++;
+  }
 }
