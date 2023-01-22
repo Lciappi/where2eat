@@ -33,8 +33,8 @@ app.get("/recommend", (req, res) => {
         trimResults(response.data.results);
         res.json({ first: "first place" });
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        console.err(error);
       });
   });
 });
@@ -44,6 +44,8 @@ function getCoords(address) {
   const requestUrl =
     GEOCODE_BASE_URL + "?address=" + encodedAddress + `&key=${API_KEY}`;
 
+    console.log(address);
+    console.log(encodedAddress);
   return axios.get(requestUrl).then((response) => {
     if (response.status != 200) {
       return null;
