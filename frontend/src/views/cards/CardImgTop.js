@@ -21,7 +21,7 @@ const CardImgTop = ({place, resp, room}) => {
 
   
   async function like() {
-
+    setUsed(true)
     let uri = `http://localhost:5050/vote?room=${encodeURIComponent(time)}&place=${encodeURIComponent(place)}&voteIdx=${encodeURIComponent(0)}`;
     var data = await fetch(uri, {
       method: "POST",
@@ -29,11 +29,11 @@ const CardImgTop = ({place, resp, room}) => {
     });
 
     const resp = await data.json();
-    console.log(resp) 
-    setUsed(true)
+    
   }
 
   async function dislike() {
+    setUsed(true)
     console.log('vote for', place, time)
 
     let uri = `http://localhost:5050/vote?room=${encodeURIComponent(time)}&place=${encodeURIComponent(place)}&voteIdx=${encodeURIComponent(1)}`;
@@ -43,7 +43,7 @@ const CardImgTop = ({place, resp, room}) => {
     });
 
     const resp = await data.json();
-    setUsed(true)
+    
   }
   
 
