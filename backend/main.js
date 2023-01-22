@@ -1,17 +1,25 @@
 var map;
+var geocoder;
 var service;
 var infowindow;
 
-function getQuery() {
-  let prompt = document.currentScript.getAttribute("prompt");
-  let address = document.currentScript.getAttribute("address");
-  let time = document.currentScript.getAttribute("time");
+var query;
+var time = 'December 17, 2020 03:24:00';
+var address;
 
-  console.log("Prompt: " + prompt);
-  console.log("Address: " + prompt);
-  console.log("Time: " + prompt);
+var coords;
+var placesObj = {};
 
-  let coords = getCoords(address);
+const MAX_RESULTS = 5;
+
+async function getQuery() {
+  geocoder = new google.maps.Geocoder();
+
+  query = document.currentScript.getAttribute("prompt");
+  address = document.currentScript.getAttribute("address");
+  // time = document.currentScript.getAttribute("time");
+
+  await geocoder.geocode({ address: address }, function(results, status) {getCoords(results, status)});
 
   var location = new google.maps.LatLng(coords.lat, coords.lng);
 
@@ -20,35 +28,44 @@ function getQuery() {
     zoom: 15,
   });
 
+  service = new google.maps.places.PlacesService(map);
+
   var request = {
     location: location,
-    radius: "500",
+    radius: "1000",
     query: "I want to eat very cheap sushi",
   };
 
-  service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, callback);
+  await service.textSearch(request, searchResponse);
 }
 
-function callback(results, status) {
+async function searchResponse(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
+    const maxResults = (MAX_RESULTS > results.length)? results.length : MAX_RESULTS;
+    placesObj['places'] = [];
+
+    for (var i = 0; i < maxResults; i++) {
       var place = results[i];
-      console.log(place);
+      placesObj.places.push(place);
     }
+  } else {
+    // TODO: error handling
+    alert("Search was not successful for the following reason: " + status);
   }
 }
 
-function getCoords(address) {
-    const request = {
-        query: address,
-        fields: ['geometry'],
-      };
-    
+async function getCoords(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    coords = {
+      lat: results[0].geometry.location.lat(),
+      lng: results[0].geometry.location.lng()
+    };
+  } else {
+    // TODO: error handling
+    alert("Geocode was not successful for the following reason: " + status);
+  }
+}
 
-    service.findPlaceFromQuery(request, function(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          return results[0].geometry.location;
-        }
-      });
+function isOpen(place) {
+  return place.opening_hours.open_now;
 }
