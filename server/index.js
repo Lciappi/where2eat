@@ -23,6 +23,11 @@ app.post("/recommend", jsonParser, (req, res) => {
   const address = req.query.address;
   const radius = '500';
 
+  console.log("query: " + query);
+  console.log("time: " + time);
+  console.log("address: " + address);
+  
+
   const encodedQuery = encodeURIComponent(query);  
 
   getCoords(address).then((location) => {
