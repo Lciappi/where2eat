@@ -13,8 +13,7 @@ app.get("/recommend", (req, res) => {
   let address = req.address;
 
   getCoords(address).then((location) => {
-    let loc = location;
-    const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${loc.lat}%2C${loc.lng}&radius=500&key=${API_KEY}`;
+    const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${location.lat}%2C${location.lng}&radius=500&key=${API_KEY}`;
 
     var config = {
       method: "get",
