@@ -74,6 +74,7 @@ app.post("/recommend", jsonParser, (req, res) => {
           cleanResponse.places[2]["votes"] = [0, 0];
           res.type("application/json");
           res.status(200);
+          ROOMS[room_number] = cleanResponse;
           return res.json(cleanResponse);
         });
       })
