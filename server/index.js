@@ -9,7 +9,8 @@ const TEXTSEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsear
 
 const app = express();
 
-app.get("/recommend", (req, res) => {
+app.post("/recommend", (req, res) => {
+  console.log(req);
   let query = encodeURIComponent(req.body.query);
   const address = req.body.address;
   const radius = req.body.radius;
