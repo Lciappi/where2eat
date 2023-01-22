@@ -34,10 +34,14 @@ const Join = () => {
   function createGroup() {
     if(groupCode == '') {
       //setAlert(true);
-    } else{
+    } else {
       router.push('/group/'+ groupCode)
     }
   }
+
+  // function setGroupCode(code) {
+  //   groupCode = code;
+  // }
 
   return (
     <Grid container spacing={6}>
