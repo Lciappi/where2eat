@@ -1,6 +1,6 @@
 // ** Icon imports
 import Login from 'mdi-material-ui/Login'
-import AccountDetails from 'mdi-material-ui/AccountDetails'
+import AccountGroup from 'mdi-material-ui/AccountGroup'
 
 
 const navigation = () => {
@@ -13,7 +13,7 @@ const navigation = () => {
     },
     {
       title: 'Create Group',
-      icon: AccountDetails,
+      icon: AccountGroup,
       path: '/create',
       openInNewTab: false
     }
