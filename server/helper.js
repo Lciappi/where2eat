@@ -1,6 +1,6 @@
 var placesObj = { places: {} };
 
-const MAX_RESULTS = 4;
+const MAX_RESULTS = 2;
 
 export function isOpen(place) {
   return place.opening_hours.open_now;

@@ -2,6 +2,7 @@ import { isOpen, trimResults } from "./helper.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import cors from "cors";
 
 const PORT = 5050;
 const API_KEY = "AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M";
@@ -11,9 +12,13 @@ const TEXTSEARCH_BASE_URL =
 
 const app = express();
 
+app.use(cors());
+
 var jsonParser = bodyParser.json();
 
 app.post("/recommend", jsonParser, (req, res) => {
+  res.type("application/json");
+  console.log("params: ", req.query);
   let query = encodeURIComponent(req.query.query);
   const address = req.query.address;
   let radius = 500;
@@ -36,11 +41,13 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     axios(config)
       .then(function (response) {
-        const topResults = trimResults(response.data.results);
-        res.status(200).json(topResults);
+        const top3 = trimResults(response.data.results);
+        res.type("application/json");
+        res.status(200);
+        return res.json(top3);
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
       });
   });
 });
