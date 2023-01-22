@@ -4,6 +4,7 @@ const axios = require("axios");
 
 const PORT = 3000;
 const API_KEY = process.env.API_KEY;
+const GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 
 const app = express();
 
@@ -15,9 +16,23 @@ app.get("/recommend", (req, res) => {
     &key=${API_KEY}`;
 
   return axios.get(BASE_URL).then((response) => {
-    console.log(repsonse);
+    // console.log(repsonse);
     res.json({ first: "first place" });
   });
 });
 
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+
+function getCoords(address) {
+  const encodedAddress = encodeURIComponent(address);
+  const requestUrl = GEOCODE_BASE_URL + '?address=' + encodedAddress;
+
+  return axios.get(requestUrl).then((response) => {
+    console.log(response);
+    res.json({ first: "first place" });
+  });
+    coords = {
+      lat: results[0].geometry.location.lat(),
+      lng: results[0].geometry.location.lng(),
+    };
+}
