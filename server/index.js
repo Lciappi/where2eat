@@ -1,16 +1,20 @@
-import { isOpen, trimResults } from './helper.js'
-import express from 'express';
-import axios from 'axios';
+import { isOpen, trimResults } from "./helper.js";
+import express from "express";
+import bodyParser from "body-parser";
+import axios from "axios";
 
 const PORT = 5050;
 const API_KEY = "AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M";
 const GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
-const TEXTSEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";
+const TEXTSEARCH_BASE_URL =
+  "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
 const app = express();
 
-app.post("/recommend", (req, res) => {
-  console.log(req);
+var jsonParser = bodyParser.json();
+
+app.post("/recommend", jsonParser, (req, res) => {
+  console.log("body: ", req.body);
   let query = encodeURIComponent(req.body.query);
   const address = req.body.address;
   const radius = req.body.radius;
@@ -18,10 +22,12 @@ app.post("/recommend", (req, res) => {
   getCoords(address).then((location) => {
     if (location == null) {
       res.status(500);
-      return res.json({error: "No address found"});
+      return res.json({ error: "No address found" });
     }
 
-    const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
+    const requestUrl =
+      TEXTSEARCH_BASE_URL +
+      `?query=${query}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
 
     var config = {
       method: "get",
@@ -45,8 +51,8 @@ function getCoords(address) {
   const requestUrl =
     GEOCODE_BASE_URL + "?address=" + encodedAddress + `&key=${API_KEY}`;
 
-    console.log(address);
-    console.log(encodedAddress);
+  console.log(address);
+  console.log(encodedAddress);
   return axios.get(requestUrl).then((response) => {
     if (response.status != 200) {
       return null;
@@ -55,7 +61,5 @@ function getCoords(address) {
     }
   });
 }
-
-
 
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
