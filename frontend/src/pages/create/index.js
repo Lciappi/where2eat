@@ -113,6 +113,11 @@ export default function GoogleMaps() {
     let uri_prompt = encodeURIComponent(prompt);
     let uri_description = encodeURIComponent(value.description);
     let uri_time = encodeURIComponent(time.format("YYYY-MM-DD HH:mm:ss"));
+
+    console.log('prompt: ', uri_prompt);
+    console.log('uri_description: ' + uri_description);
+    console.log('uri_time: ' + uri_time);
+
     const link = '/group/' + uri_prompt + '/' + uri_time + '/' + uri_description;
 
     router.push(link)

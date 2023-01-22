@@ -7,24 +7,10 @@ import CardImgTop from 'src/views/cards/CardImgTop'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import Trophy from 'src/views/dashboard/Trophy'
 import { useEffect } from 'react'
+import { useState } from 'react'
+import { Diversify } from 'mdi-material-ui'
 
 const Group = () => {
-
-  const router = useRouter()
-  const { prompt, time, description } = router.query
-
-  useEffect(shoebc, [prompt, time, description]);
-
-  async function shoebc() {   
-    let uri = `http://localhost:5050/recommend?query=${prompt}&address=${description}`;
-    var data = await fetch(uri, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    let resp = await data.json();
-    console.log(resp);
-  }
   
 
   return (
@@ -33,18 +19,22 @@ const Group = () => {
           <Trophy />
       </Grid>
       <Grid item xs={12} md={12}>
-          <StatisticsCard />
+        <div>          
+        <StatisticsCard />
+        </div>
       </Grid>
+
       <Grid item xs={4}/>
       <Grid item xs={8}/>
+
       <Grid item xs={4}>
-        <CardImgTop />
+        <CardImgTop place={0}/>
       </Grid>
       <Grid item  xs={4}>
-        <CardImgTop />
+        <CardImgTop place={1}/>
       </Grid>
       <Grid item  xs={4}>
-        <CardImgTop />
+        <CardImgTop place={2}/>
       </Grid>
 
     </Grid>

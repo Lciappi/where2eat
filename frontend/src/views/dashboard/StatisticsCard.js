@@ -17,17 +17,18 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import { Alarm } from 'mdi-material-ui';
 import { Calendar } from 'mdi-material-ui';
 import AccountDetails from 'mdi-material-ui/AccountDetails'
+import { useRouter } from 'next/router'
 
 const salesData = [
   {
     stats: '17:00',
-    title: 'Time to meet',
+    title: 'When to meet',
     color: 'primary',
     icon: <Alarm sx={{ fontSize: '1.75rem' }} />
   },
   {
     stats: '21-02-2022',
-    title: 'Date',
+    title: 'Address',
     color: 'secondary',
     icon: <Calendar sx={{ fontSize: '1.75rem' }} />
   },
@@ -40,14 +41,19 @@ const salesData = [
 ]
 
 const renderStats = () => {
+  const router = useRouter()
+  const { prompt, time, description } = router.query
+
+  const values = [time, description, prompt]
+
   return salesData.map((item, index) => (
-    <Grid item xs={12} sm={3} key={index}>
+    <Grid item xs={12} sm={4} key={index}>
       <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar
           variant='rounded'
           sx={{
             mr: 3,
-            width: 44,
+            width: 50,
             height: 44,
             boxShadow: 3,
             color: 'common.white',
@@ -58,7 +64,7 @@ const renderStats = () => {
         </Avatar>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Typography variant='caption'>{item.title}</Typography>
-          <Typography variant='h6'>{item.stats}</Typography>
+          <Typography variant='h6'>{values[index]}</Typography>
         </Box>
       </Box>
     </Grid>
