@@ -1,4 +1,4 @@
-#Where2Eat
+# Where2Eat
 
 Deciding where to eat is hard. Nowadays, a simple google search yields hundreds of options, making deciding what to try next an overwhelming task, even more so when you’re in a group. Enter Where2Eat. 
 
