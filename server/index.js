@@ -1,4 +1,3 @@
-const express = require("express");
 const axios = require("axios");
 
 const PORT = 5050;
