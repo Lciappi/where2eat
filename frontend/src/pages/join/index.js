@@ -9,15 +9,14 @@ import { useState } from 'react'
 
 const Join = () => {
   const [groupCode, setGroupCode] = useState('');
-  const [aalert, setAalert] = useState(true);
   const router = useRouter()
 
 
   function createGroup() {
     if(groupCode == '') {
-      //setAlert(true);
-    } else{
-      router.push('/group/'+ groupCode)
+      return
+    } else {
+      router.push('/group/'+ '-1' + '/' + groupCode + '/' + 'view')
     }
   }
 
@@ -32,8 +31,7 @@ const Join = () => {
       <Grid item xs={3}/>
       <Grid item xs={3}/>
       <Grid item textAlign='center' xs={6}>
-        {aalert ? <><Alert severity="error">Enter a Valid Code</Alert> <br/></> : null }
-        <Button fullWidth={true} variant="contained" onClick={createGroup()}>
+        <Button id="gaga" fullWidth={true} variant="contained" onClick={createGroup}>
           Join Group
         </Button>
       </Grid>

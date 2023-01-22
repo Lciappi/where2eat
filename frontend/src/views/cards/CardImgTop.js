@@ -11,10 +11,8 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 
-const CardImgTop = ({place}) => {
-  const router = useRouter()
-  const { prompt, time, description } = router.query
-  const [library, setLibrary] = useState();
+const CardImgTop = ({place, resp}) => {
+  const [information, setInformation] = useState(resp);
 
   const [restaurantName, setRestaurantName] = useState('')
   const [distance, setDistance] = useState('')
@@ -22,56 +20,41 @@ const CardImgTop = ({place}) => {
   const [driving, setDriving] = useState('')
   const [walking, setWalking] = useState('')
   const [open, setOpen] = useState(false)
-  const [group, setGroup] = useState("-1")
+  const [rating, setRating] = useState('')
 
+  // console.log(resp.places[place].name)
 
-
-
-
-  useEffect(shoebc, [prompt, time, description]);
-
-  async function shoebc() {
-    if(prompt === undefined || time === undefined || description === undefined) return;
-
-    let uri = `http://localhost:5050/recommend?query=${encodeURIComponent(prompt)}&address=${encodeURIComponent(description)}&time=${encodeURIComponent(time)}&room=${encodeURIComponent(group)})}`;
-    var data = await fetch(uri, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    const resp = await data.json();
-    console.log(resp)
-
-    setLibrary(resp);
-
-    setRestaurantName(resp.places[place].name);
-    setDistance(resp.places[place].distance);
-    setAddress(resp.places[place].address.split(", BC")[0]);
-    setDriving(resp.places[place].driving);
-    setWalking(resp.places[place].walking);
-    setOpen(resp.places[place].open);
-
-  }
+  // //setRestaurantName(resp.places[place].name);
+  // setDistance(resp.places[place].distance);
+  // setAddress(resp.places[place].address.split(", BC")[0]);
+  // setDriving(resp.places[place].driving_duration);
+  // setWalking(resp.places[place].walking_duration);
+  // setOpen(resp.places[place].open);
+  // setRating(resp.places[place].rating)
 
   return (
     <Card>
       <CardContent>
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
-          {restaurantName}
+          {information.places[place].name}
         </Typography>
         <Chip label={open ? "Open" : "Closed"} color={open ? "success" : "error"} />
         <br />
+        <br />
         <Typography variant='body2'>
-          Distance: {distance}
+          Distance: {information.places[place].distance}
         </Typography>
         <Typography variant='body2'>
-          Address: {address}
+          Address: {information.places[place].address}
         </Typography>
         <Typography variant='body2'>
-          Time Driving: {driving}
+          Time Driving: {information.places[place].driving_duration}
         </Typography>
         <Typography variant='body2'>
-          Time Walking: {walking}
+          Time Walking: {information.places[place].walking_duration}
+        </Typography>
+        <Typography variant='body2'>
+          Rating: {information.places[place].rating}
         </Typography>
         <br />
         <Button variant="contained" endIcon={<SendIcon />} fullWidth={true}>
