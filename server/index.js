@@ -24,7 +24,7 @@ app.post("/vote", (req, res) => {
 });
 
 app.post("/recommend", jsonParser, (req, res) => {
-  if (req.query.room !== undefined) {
+  if (req.query.room != "-1") {
     console.log("Room number: ", req.query.room);
 
     res.type("application/json");
