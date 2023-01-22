@@ -114,14 +114,13 @@ export default function GoogleMaps() {
   function move(){
     console.log('==> Button Pressed <==')
     console.log('query: ', prompt)
-    console.log('time: ', time)
+    console.log('time: ', (time.format('YYYY-MM-DD HH:mm:ss')))
     console.log('address: ', value.description)
 
     fetch('http://localhost:5050/recommend', {
         method: "POST",
         mode:'no-cors',
-        headers: { "content-type": "application/json"},
-        body: JSON.stringify({ query: {prompt}, time:{time}, address:{value} })
+        body: JSON.stringify({ query: prompt, time:time.format('YYYY-MM-DD HH:mm:ss'), address:value.description})
       })
       .then((resp) => {
         console.log(resp);
