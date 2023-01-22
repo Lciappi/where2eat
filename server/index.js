@@ -4,6 +4,7 @@ const axios = require("axios");
 const PORT = 5050;
 const API_KEY = "AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M";
 const GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
+const TEXTSEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
 const app = express();
 
@@ -14,11 +15,11 @@ app.get("/recommend", (req, res) => {
   getCoords(address).then((location) => {
     let loc = location;
 
-    const BASE_URL = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&location=${loc.lat}%2C${loc.lng}&radius=500&key=${API_KEY}`;
+    const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${loc.lat}%2C${loc.lng}&radius=500&key=${API_KEY}`;
 
     var config = {
       method: "get",
-      url: BASE_URL,
+      url: requestUrl,
       headers: {},
     };
 
