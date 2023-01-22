@@ -1,4 +1,4 @@
-import { isOpen, getTopThree } from "./helper.js";
+import { getTopThree, buildResponse } from "./helper.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
@@ -21,7 +21,7 @@ app.post("/recommend", jsonParser, (req, res) => {
   const query = req.query.query;
   const time = req.query.time;
   const address = req.query.address;
-  const radius = 500;
+  const radius = '500';
 
   const encodedQuery = encodeURIComponent(query);  
 
@@ -44,10 +44,10 @@ app.post("/recommend", jsonParser, (req, res) => {
     axios(config)
       .then(function (response) {
         let topThree = getTopThree(response.data.results);
-        topThree = buildResponse(topThree, query, time);
+        const cleanResponse = buildResponse(topThree, query, time);
         res.type("application/json");
         res.status(200);
-        return res.json(topThree);
+        return res.json(cleanResponse);
       })
       .catch((error) => {
         console.log(error);

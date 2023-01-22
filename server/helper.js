@@ -1,4 +1,4 @@
-var placesObj = { places: {} };
+import { raw } from "express";
 
 const MAX_RESULTS = 2;
 
@@ -6,17 +6,18 @@ export function isOpen(place) {
   return place.opening_hours.open_now;
 }
 
-export function buildResponse(places, query, time) {
-  let cleanResponse = {};
-
-  cleanResponse['prompt'] = query;
-  cleanResponse['time'] = time;
-  cleanResponse['places'] = trimPlaces(places);
+export function buildResponse(results, query, time) {
+  let cleanResponse = {
+    prompt: query,
+    time: time,
+  };
+  cleanResponse['places'] = trimPlaces(results.places);
 
   return cleanResponse;
 }
 
 export function getTopThree(results) {
+  var placesObj = { places: {} };
   const max =
     MAX_RESULTS > results.length ? results.length : MAX_RESULTS;
   let currentLength = 0;
@@ -54,7 +55,29 @@ function getMinRatedIndex(places) {
   return minRatedIndex;
 }
 
-function trimPlaces(places) {
-  let trimmedPlaces = {};
-  
+function trimPlaces(rawPlaces) {
+  console.log('trimming places...');
+  console.log(rawPlaces);
+  var trimmedPlaces = {};
+  for (let i = 0; i <= MAX_RESULTS; i++) {
+    trimmedPlaces[i] = trimPlace(rawPlaces[i]);
+  }
+  console.log(trimmedPlaces);
+
+  return trimmedPlaces;
+}
+
+function trimPlace(place) {
+  console.log('trimming singular place... ' + place);
+  const trimmedPlace = {
+    name: place.name,
+    address: place.formatted_address,
+    distance: null,
+    open_now: place.opening_hours.open_now,
+    rating: place.rating,
+    price_level: place.price_level,
+    photos: place.photos
+  };
+  console.log(trimmedPlace);
+  return trimmedPlace;
 }
