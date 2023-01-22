@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 //import { isOpen, trimResults } from "./helper.js";
+=======
+import { getTopThree, buildResponse } from "./helper.js";
+>>>>>>> dce4bec5c5435f54c8f514f1cebe912cc0be200e
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
@@ -20,7 +24,13 @@ app.post("/recommend", jsonParser, (req, res) => {
   res.type("application/json");
   let query = encodeURIComponent(req.query.query);
   const address = req.query.address;
+<<<<<<< HEAD
   let radius = 500;
+=======
+  const radius = '500';
+
+  const encodedQuery = encodeURIComponent(query);  
+>>>>>>> dce4bec5c5435f54c8f514f1cebe912cc0be200e
 
   getCoords(address).then((location) => {
     if (location == null) {
@@ -40,17 +50,24 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     axios(config)
       .then(function (response) {
-        //const top3 = trimResults(response.data.results);
-        return getDuration(address, [
-          response.data.results[0].formatted_address,
-          response.data.results[1].formatted_address,
-          response.data.results[2].formatted_address,
-        ]).then((durations) => {
-          console.log("Durations: ", durations);
-          res.type("application/json");
-          res.status(200);
-          return res.json(response.data.results);
-        });
+        let topThree = getTopThree(response.data.results);
+        const cleanResponse = buildResponse(topThree, query, time);
+        res.type("application/json");
+        res.status(200);
+        return res.json(cleanResponse);
+
+        // return getDuration(address, [
+        //   response.data.results[0].formatted_address,
+        //   response.data.results[1].formatted_address,
+        //   response.data.results[2].formatted_address,
+        // ]).then((durations) => {
+        //   console.log("Durations: ", durations);
+        //   res.type("application/json");
+        //   res.status(200);
+        //   return res.json(response.data.results);
+        // });
+
+        
       })
       .catch((error) => {
         console.log(error);
