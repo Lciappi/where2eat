@@ -19,7 +19,7 @@ app.use(cors());
 var jsonParser = bodyParser.json();
 
 app.post("/vote", (req, res) => {
-  ROOMS[req.query.room][req.query.place][req.query.voteIdx] += 1;
+  ROOMS[req.query.room].votes[req.query.place][req.query.voteIdx] += 1;
   res.status(200).send("success");
 });
 
@@ -101,18 +101,29 @@ function getCoords(address) {
 function getJourneyInfo(orig, dests) {
   var config_driving = {
     method: "get",
-    url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${orig}&destinations=${dests[0]}%7C${dests[1]}%7C${dests[2]}&departure_time=now&key=${API_KEY}`,
+    url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(
+      orig
+    )}&destinations=${encodeURIComponent(dests[0])}%7C${encodeURIComponent(
+      dests[1]
+    )}%7C${encodeURIComponent(dests[2])}&departure_time=now&key=${API_KEY}`,
     headers: {},
   };
 
   var config_walking = {
     method: "get",
-    url: `https://maps.googleapis.com/maps/api/distancematrix/json?mode=walking&origins=${orig}&destinations=${dests[0]}%7C${dests[1]}%7C${dests[2]}&departure_time=now&key=${API_KEY}`,
+    url: `https://maps.googleapis.com/maps/api/distancematrix/json?mode=walking&origins=${encodeURIComponent(
+      orig
+    )}&destinations=${encodeURIComponent(dests[0])}%7C${encodeURIComponent(
+      dests[1]
+    )}%7C${encodeURIComponent(dests[2])}&departure_time=now&key=${API_KEY}`,
     headers: {},
   };
 
   return axios(config_driving)
     .then(function (resp_drive) {
+      console.log("########################");
+      console.log(resp_drive);
+      console.log("########################");
       let dur1 = resp_drive.data.rows[0].elements[0].duration.text;
       let dur2 = resp_drive.data.rows[0].elements[1].duration.text;
       let dur3 = resp_drive.data.rows[0].elements[2].duration.text;
