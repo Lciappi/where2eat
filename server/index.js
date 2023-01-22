@@ -9,16 +9,16 @@ const TEXTSEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsear
 const app = express();
 
 app.get("/recommend", (req, res) => {
-  res.type("appliaction/json");
-  res.status(200);
   let query = encodeURIComponent(req.query);
-  let address = req.body.address;
-  let radius = req.body.radius;
+  let address = req.address;
+  let radius = req.radius;
 
   getCoords(address).then((location) => {
-    if (location == null) {
-      res.status(500).json({error: "No address found"});
+    if(location == null) {
+      res.status(500);
+      return res.json({error: "No address found"});
     }
+
     const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
 
     var config = {
