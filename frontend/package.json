@@ -59,6 +59,7 @@
     "babel-eslint": "^10.1.0",
     "clsx": "^1.1.1",
     "dayjs": "^1.11.7",
+    "fs": "^0.0.1-security",
     "google-map-react": "^2.2.0",
     "mdi-material-ui": "^7.1.0",
     "moment": "^2.29.4",

@@ -16,6 +16,7 @@ import Typography from "@mui/material/Typography";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 
+
 // This key was created specifically for the demo in mui.com.
 // You need to create a new one for your application.
 const GOOGLE_MAPS_API_KEY = "AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M";
@@ -107,24 +108,15 @@ export default function GoogleMaps() {
     setTime(newValue);
   };
 
-  async function move() {
-    console.log("==> Button Pressed <==");
-    console.log("query: ", prompt);
-    console.log("time: ", time);
-    console.log("address: ", value.description);
+  function move() {
 
-    let uri = `http://localhost:5050/recommend?query=${encodeURIComponent(
-      prompt
-    )}&address=${encodeURIComponent(value.description)}`;
-    var data = await fetch(uri, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
+    let uri_prompt = encodeURIComponent(prompt);
+    let uri_description = encodeURIComponent(value.description);
+    let uri_time = encodeURIComponent(time.format("YYYY-MM-DD HH:mm:ss"));
+    const link = '/group/' + uri_prompt + '/' + uri_time + '/' + uri_description;
 
-    let resp = await data.json();
-    console.log(resp);
-
-    //router.push('/group/eat')
+    router.push(link)
+    
   }
 
   return (
