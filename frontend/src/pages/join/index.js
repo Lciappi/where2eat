@@ -12,7 +12,25 @@ const Join = () => {
   const [aalert, setAalert] = useState(true);
   const router = useRouter()
 
+  useEffect(shoebc, [group, place, voteIdx]);
 
+  async function shoebc() {
+    console.log('shoebc')
+    if(group === undefined || place === undefined || voteIdx === undefined) return;
+
+    let uri = `http://localhost:5050/recommend?room=${encodeURIComponent(group)}&place=${encodeURIComponent(place)}&voteIdx=${encodeURIComponent(voteIdx)}`;
+    var data = await fetch(uri, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const resp = await data.json();
+    
+    if(resp == undefined) return;
+    console.log(resp)
+    setLibrary(resp);
+  }
+  
   function createGroup() {
     if(groupCode == '') {
       //setAlert(true);
