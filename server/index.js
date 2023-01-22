@@ -19,7 +19,7 @@ app.use(cors());
 var jsonParser = bodyParser.json();
 
 app.post("/vote", (req, res) => {
-  ROOMS[req.query.room].votes[req.query.place][req.query.voteIdx] += 1;
+  ROOMS[req.query.room].places[req.query.place].votes[req.query.voteIdx] += 1;
   res.status(200).send("success");
 });
 
@@ -33,8 +33,6 @@ app.post("/recommend", jsonParser, (req, res) => {
   }
 
   let room_number = Math.floor(Math.random() * 10000).toString();
-
-  let votes = { 0: [0, 0], 1: [0, 0], 2: [0, 0] };
 
   console.log("Creating room: ", room_number);
 
