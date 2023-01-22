@@ -36,11 +36,11 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     axios(config)
       .then(function (response) {
-        trimResults(response.data.results);
-        res.status(200).send(response.data.results);
+        const topResults = trimResults(response.data.results);
+        res.status(200).json(topResults);
       })
       .catch((error) => {
-        console.err(error);
+        console.error(error);
       });
   });
 });
@@ -50,8 +50,6 @@ function getCoords(address) {
   const requestUrl =
     GEOCODE_BASE_URL + "?address=" + encodedAddress + `&key=${API_KEY}`;
 
-  console.log(address);
-  console.log(encodedAddress);
   return axios.get(requestUrl).then((response) => {
     if (response.status != 200) {
       return null;
