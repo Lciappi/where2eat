@@ -9,10 +9,15 @@ const TEXTSEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsear
 const app = express();
 
 app.get("/recommend", (req, res) => {
+  res.type("appliaction/json");
   let query = encodeURIComponent(req.query);
   let address = req.address;
 
   getCoords(address).then((location) => {
+    if (location == null) {
+      res.status(500);
+      res.json({error: "No address found"});
+    }
     const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${location.lat}%2C${location.lng}&radius=500&key=${API_KEY}`;
 
     var config = {
@@ -40,7 +45,10 @@ function getCoords(address) {
     GEOCODE_BASE_URL + "?address=" + encodedAddress + `&key=${API_KEY}`;
 
   return axios.get(requestUrl).then((response) => {
-    console.log(response.data.geometry);
-    return response.data.results[0].geometry.location;
+    if (response.status != 'OK') {
+      return null;
+    } else {
+      return response.data.results[0].geometry.location;
+    }
   });
 }
