@@ -33,9 +33,6 @@ app.post("/recommend", jsonParser, (req, res) => {
   }
 
   let room_number = Math.floor(Math.random() * 10000).toString();
-
-  let votes = { 0: [0, 0], 1: [0, 0], 2: [0, 0] };
-
   console.log("Creating room: ", room_number);
 
   res.type("application/json");
@@ -72,7 +69,9 @@ app.post("/recommend", jsonParser, (req, res) => {
         ]).then((durations) => {
           const cleanResponse = buildResponse(topThree, query, time, durations);
           cleanResponse["room"] = room_number;
-          cleanResponse["votes"] = votes;
+          cleanResponse.places[0]["votes"] = [0, 0];
+          cleanResponse.places[1]["votes"] = [0, 0];
+          cleanResponse.places[2]["votes"] = [0, 0];
           res.type("application/json");
           res.status(200);
           return res.json(cleanResponse);
