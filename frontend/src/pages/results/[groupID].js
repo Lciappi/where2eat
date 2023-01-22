@@ -13,6 +13,15 @@ import { Card, CardHeader } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { styled, useTheme } from '@mui/material/styles'
+
+
+// Styled component for the trophy image
+const TrophyImg = styled('img')({
+    width: 20,
+    height: 25
+  })
+
 
 const Results = () => {
 
@@ -70,7 +79,8 @@ const Results = () => {
                 >
                 <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
                     <Typography variant='h4' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
-                    Restaurant Name: {library.places[0].name}
+                    {library.places[0].isBest ? <TrophyImg alt='trophy' src='/images/misc/trophy.png' /> : null}
+ {library.places[0].name}
                     </Typography>
                     <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
                     Likes: {library.places[0].votes[0]}
@@ -78,6 +88,10 @@ const Results = () => {
                     <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
                     Dislikes: {library.places[0].votes[1]}
                     </Typography>
+                    <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
+                    {library.places[0].address}
+                    </Typography>
+                    
 
                 </Box>
 
@@ -94,7 +108,8 @@ const Results = () => {
                 >
                 <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
                     <Typography variant='h4' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
-                    Restaurant Name: {library.places[1].name}
+                    {library.places[1].isBest ? <TrophyImg alt='trophy' src='/images/misc/trophy.png' /> : null}
+                    {library.places[1].name}
                     </Typography>
                     <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
                     Likes: {library.places[1].votes[0]}
@@ -102,6 +117,10 @@ const Results = () => {
                     <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
                     Dislikes: {library.places[1].votes[1]}
                     </Typography>
+                    <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
+                    {library.places[1].address}
+                    </Typography>
+                    
 
                 </Box>
 
@@ -118,13 +137,16 @@ const Results = () => {
                 >
                 <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
                     <Typography variant='h4' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
-                    Restaurant Name: {library.places[2].name}
+                    {library.places[2].isBest ? <TrophyImg alt='trophy' src='/images/misc/trophy.png' /> : null} {library.places[2].name}
                     </Typography>
                     <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
                     Likes: {library.places[2].votes[0]}
                     </Typography>
                     <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
                     Dislikes: {library.places[2].votes[1]}
+                    </Typography>
+                    <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
+                    {library.places[2].address}
                     </Typography>
 
                 </Box>
