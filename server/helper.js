@@ -56,19 +56,15 @@ function getMinRatedIndex(places) {
 }
 
 function trimPlaces(rawPlaces) {
-  console.log('trimming places...');
-  console.log(rawPlaces);
   var trimmedPlaces = {};
   for (let i = 0; i <= MAX_RESULTS; i++) {
     trimmedPlaces[i] = trimPlace(rawPlaces[i]);
   }
-  console.log(trimmedPlaces);
 
   return trimmedPlaces;
 }
 
 function trimPlace(place) {
-  console.log('trimming singular place... ' + place);
   const trimmedPlace = {
     name: place.name,
     address: place.formatted_address,
@@ -78,6 +74,5 @@ function trimPlace(place) {
     price_level: place.price_level,
     photos: place.photos
   };
-  console.log(trimmedPlace);
   return trimmedPlace;
 }

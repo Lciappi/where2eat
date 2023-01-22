@@ -18,10 +18,10 @@ var jsonParser = bodyParser.json();
 
 app.post("/recommend", jsonParser, (req, res) => {
   res.type("application/json");
-  let query = encodeURIComponent(req.query.query);
+  const query = req.query.query;
+  const time = req.query.time;
   const address = req.query.address;
   const radius = '500';
-
   const encodedQuery = encodeURIComponent(query);  
 
   getCoords(address).then((location) => {
@@ -32,7 +32,7 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     const requestUrl =
       TEXTSEARCH_BASE_URL +
-      `?query=${query}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
+      `?query=${encodedQuery}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
 
     var config = {
       method: "get",
@@ -43,23 +43,17 @@ app.post("/recommend", jsonParser, (req, res) => {
     axios(config)
       .then(function (response) {
         let topThree = getTopThree(response.data.results);
+        getJourneyInfo(address, [
+          topThree.places[0].formatted_address,
+          topThree.places[1].formatted_address,
+          topThree.places[2].formatted_address,
+        ]).then((durations) => {
+          console.log("Durations: ", durations);
+        });
         const cleanResponse = buildResponse(topThree, query, time);
         res.type("application/json");
         res.status(200);
         return res.json(cleanResponse);
-
-        // return getDuration(address, [
-        //   response.data.results[0].formatted_address,
-        //   response.data.results[1].formatted_address,
-        //   response.data.results[2].formatted_address,
-        // ]).then((durations) => {
-        //   console.log("Durations: ", durations);
-        //   res.type("application/json");
-        //   res.status(200);
-        //   return res.json(response.data.results);
-        // });
-
-        
       })
       .catch((error) => {
         console.log(error);
@@ -81,7 +75,7 @@ function getCoords(address) {
   });
 }
 
-function getDuration(orig, dests) {
+function getJourneyInfo(orig, dests) {
   var config_driving = {
     method: "get",
     url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${orig}&destinations=${dests[0]}%7C${dests[1]}%7C${dests[2]}&departure_time=now&key=${API_KEY}`,
