@@ -44,8 +44,4 @@ function getCoords(address) {
     console.log(response.data.geometry);
     return response.data.results[0].geometry.location;
   });
-  coords = {
-    lat: results[0].geometry.location.lat(),
-    lng: results[0].geometry.location.lng(),
-  };
 }
