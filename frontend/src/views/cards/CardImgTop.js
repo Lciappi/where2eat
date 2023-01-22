@@ -38,7 +38,7 @@ const CardImgTop = ({place, resp}) => {
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
           {information.places[place].name}
         </Typography>
-        <Chip label={open ? "Open" : "Closed"} color={open ? "success" : "error"} />
+        <Chip label={open ? "Open Now" : "Closed Now"} color={open ? "success" : "error"} />
         <br />
         <br />
         <Typography variant='body2'>
