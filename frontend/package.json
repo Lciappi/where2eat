@@ -70,7 +70,8 @@
     "react-dom": "17.0.2",
     "react-perfect-scrollbar": "^1.5.8",
     "react-popper": "^2.2.5",
-    "use-google-maps-script": "^0.1.2"
+    "use-google-maps-script": "^0.1.2",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
