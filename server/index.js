@@ -12,13 +12,14 @@ app.get("/recommend", (req, res) => {
   res.type("appliaction/json");
   res.status(200);
   let query = encodeURIComponent(req.query);
-  let address = req.address;
+  let address = req.body.address;
+  let radius = req.body.radius;
 
   getCoords(address).then((location) => {
     if (location == null) {
       res.status(500).json({error: "No address found"});
     }
-    const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${location.lat}%2C${location.lng}&radius=500&key=${API_KEY}`;
+    const requestUrl = TEXTSEARCH_BASE_URL + `?query=${query}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
 
     var config = {
       method: "get",
