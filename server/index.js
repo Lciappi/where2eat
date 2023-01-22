@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-//import { isOpen, trimResults } from "./helper.js";
-=======
 import { getTopThree, buildResponse } from "./helper.js";
->>>>>>> dce4bec5c5435f54c8f514f1cebe912cc0be200e
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
@@ -24,13 +20,9 @@ app.post("/recommend", jsonParser, (req, res) => {
   res.type("application/json");
   let query = encodeURIComponent(req.query.query);
   const address = req.query.address;
-<<<<<<< HEAD
-  let radius = 500;
-=======
   const radius = '500';
 
   const encodedQuery = encodeURIComponent(query);  
->>>>>>> dce4bec5c5435f54c8f514f1cebe912cc0be200e
 
   getCoords(address).then((location) => {
     if (location == null) {
