@@ -25,8 +25,6 @@ export function buildResponse(results, query, time, durations) {
   cleanResponse.places[1]["walking_duration"] = durations.walking_durations[1];
   cleanResponse.places[2]["walking_duration"] = durations.walking_durations[2];
 
-  console.log(cleanResponse);
-
   return cleanResponse;
 }
 
