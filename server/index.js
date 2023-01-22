@@ -18,6 +18,12 @@ app.use(cors());
 
 var jsonParser = bodyParser.json();
 
+app.get("/results", (req, res) => {
+  res.type("application/json");
+  res.status(200);
+  return res.json(ROOMS[req.query.room]);
+});
+
 app.post("/vote", (req, res) => {
   ROOMS[req.query.room].places[req.query.place].votes[req.query.voteIdx] += 1;
   res.status(200).send("success");
