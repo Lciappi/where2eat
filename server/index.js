@@ -1,4 +1,4 @@
-import { isOpen, trimResults } from "./helper.js";
+import { isOpen, getTopThree } from "./helper.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
@@ -18,10 +18,12 @@ var jsonParser = bodyParser.json();
 
 app.post("/recommend", jsonParser, (req, res) => {
   res.type("application/json");
-  console.log("params: ", req.query);
-  let query = encodeURIComponent(req.query.query);
+  const query = req.query.query;
+  const time = req.query.time;
   const address = req.query.address;
-  let radius = 500;
+  const radius = 500;
+
+  const encodedQuery = encodeURIComponent(query);  
 
   getCoords(address).then((location) => {
     if (location == null) {
@@ -31,7 +33,7 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     const requestUrl =
       TEXTSEARCH_BASE_URL +
-      `?query=${query}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
+      `?query=${encodedQuery}&location=${location.lat}%2C${location.lng}&radius=${radius}&key=${API_KEY}`;
 
     var config = {
       method: "get",
@@ -41,10 +43,11 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     axios(config)
       .then(function (response) {
-        const top3 = trimResults(response.data.results);
+        let topThree = getTopThree(response.data.results);
+        topThree = buildResponse(topThree, query, time);
         res.type("application/json");
         res.status(200);
-        return res.json(top3);
+        return res.json(topThree);
       })
       .catch((error) => {
         console.log(error);

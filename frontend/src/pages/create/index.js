@@ -110,12 +110,13 @@ export default function GoogleMaps() {
   async function move() {
     console.log("==> Button Pressed <==");
     console.log("query: ", prompt);
-    console.log("time: ", time);
+    console.log("time: ", time.format("YYYY-MM-DD HH:mm:ss"));
+    const formattedTime = time.format("YYYY-MM-DD HH:mm:ss");
     console.log("address: ", value.description);
 
     let uri = `http://localhost:5050/recommend?query=${encodeURIComponent(
       prompt
-    )}&address=${encodeURIComponent(value.description)}`;
+    )}&address=${encodeURIComponent(value.description)}&time=${encodeURIComponent(formattedTime)}`;
     var data = await fetch(uri, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

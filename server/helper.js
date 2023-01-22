@@ -6,7 +6,17 @@ export function isOpen(place) {
   return place.opening_hours.open_now;
 }
 
-export function trimResults(results) {
+export function buildResponse(places, query, time) {
+  let cleanResponse = {};
+
+  cleanResponse['prompt'] = query;
+  cleanResponse['time'] = time;
+  cleanResponse['places'] = trimPlaces(places);
+
+  return cleanResponse;
+}
+
+export function getTopThree(results) {
   const max =
     MAX_RESULTS > results.length ? results.length : MAX_RESULTS;
   let currentLength = 0;
@@ -42,4 +52,9 @@ function getMinRatedIndex(places) {
     }
   }
   return minRatedIndex;
+}
+
+function trimPlaces(places) {
+  let trimmedPlaces = {};
+  
 }
