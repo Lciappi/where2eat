@@ -39,10 +39,6 @@ const Join = () => {
     }
   }
 
-  // function setGroupCode(code) {
-  //   groupCode = code;
-  // }
-
   return (
     <Grid container spacing={6}>
       <Grid item xs={3}/>
