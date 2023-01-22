@@ -9,6 +9,7 @@ import SendIcon from '@mui/icons-material/Check';
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react';
+import Chip from '@mui/material/Chip';
 
 const CardImgTop = ({place}) => {
   const router = useRouter()
@@ -18,7 +19,12 @@ const CardImgTop = ({place}) => {
   const [restaurantName, setRestaurantName] = useState('')
   const [distance, setDistance] = useState('')
   const [address, setAddress] = useState('')
-  const [image, setImage] = useState('')
+  const [driving, setDriving] = useState('')
+  const [walking, setWalking] = useState('')
+  const [open, setOpen] = useState(false)
+  const [group, setGroup] = useState("-1")
+
+
 
 
 
@@ -27,7 +33,7 @@ const CardImgTop = ({place}) => {
   async function shoebc() {
     if(prompt === undefined || time === undefined || description === undefined) return;
 
-    let uri = `http://localhost:5050/recommend?query=${encodeURIComponent(prompt)}&address=${encodeURIComponent(description)}&time=${encodeURIComponent(time)}`;
+    let uri = `http://localhost:5050/recommend?query=${encodeURIComponent(prompt)}&address=${encodeURIComponent(description)}&time=${encodeURIComponent(time)}&room=${encodeURIComponent(group)})}`;
     var data = await fetch(uri, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,22 +47,31 @@ const CardImgTop = ({place}) => {
     setRestaurantName(resp.places[place].name);
     setDistance(resp.places[place].distance);
     setAddress(resp.places[place].address.split(", BC")[0]);
-    
+    setDriving(resp.places[place].driving);
+    setWalking(resp.places[place].walking);
+    setOpen(resp.places[place].open);
 
   }
 
   return (
     <Card>
-      <CardMedia sx={{ height: '14.5625rem' }} image='/images/cards/glass-house.png' />
       <CardContent>
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
           {restaurantName}
         </Typography>
+        <Chip label={open ? "Open" : "Closed"} color={open ? "success" : "error"} />
+        <br />
         <Typography variant='body2'>
           Distance: {distance}
         </Typography>
         <Typography variant='body2'>
           Address: {address}
+        </Typography>
+        <Typography variant='body2'>
+          Time Driving: {driving}
+        </Typography>
+        <Typography variant='body2'>
+          Time Walking: {walking}
         </Typography>
         <br />
         <Button variant="contained" endIcon={<SendIcon />} fullWidth={true}>
