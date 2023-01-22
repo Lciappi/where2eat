@@ -59,7 +59,7 @@ const CardImgTop = ({place}) => {
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
           {restaurantName}
         </Typography>
-        <Chip label={open ? "Open" : "Closed"} color={open ? "success" : "error"} />
+        <Chip label={open ? "Open Now" : "Closed Now"} color={open ? "success" : "error"} />
         <br />
         <Typography variant='body2'>
           Distance: {distance}
