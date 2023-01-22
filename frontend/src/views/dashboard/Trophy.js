@@ -14,14 +14,9 @@ const TriangleImg = styled('img')({
 })
 
 // Styled component for the trophy image
-const TrophyImg = styled('img')({
-  right: 36,
-  bottom: 20,
-  height: 98,
-  position: 'absolute'
-})
 
-const Trophy = () => {
+
+const Trophy = ({people}) => {
   // ** Hook
   const theme = useTheme()
   const imageSrc = theme.palette.mode === 'light' ? 'triangle-light.png' : 'triangle-dark.png'
@@ -30,7 +25,7 @@ const Trophy = () => {
     <Card sx={{ position: 'relative' }}>
       <CardContent>
         <Typography variant='h1'>Welcome!</Typography>
-        <Typography variant='h6'>To Group-2048</Typography>
+        <Typography variant='h6'>To Group {people}</Typography>
         <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}>
           Eating together, now and forever!
         </Typography>

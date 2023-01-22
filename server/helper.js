@@ -86,3 +86,14 @@ function trimPlace(place) {
   };
   return trimmedPlace;
 }
+
+export function getBest(places) {
+  let maxRating = 0;
+  let maxPlace = null;
+  for (let i = 0; i <= MAX_RESULTS; i++) {
+    if (places[i].rating > maxRating) {
+      maxPlace = places[i];
+    }
+  }
+  return maxPlace;
+}
