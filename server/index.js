@@ -8,8 +8,8 @@ const GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 const app = express();
 
 app.get("/recommend", (req, res) => {
-  let query = encodeURIComponent(req.query);
-  let address = req.address;
+  let query = encodeURIComponent(req.params.query);
+  let address = req.params.address;
 
   getCoords(address).then((location) => {
     let loc = location;
@@ -23,12 +23,14 @@ app.get("/recommend", (req, res) => {
     };
 
     axios(config)
-      .then(function (response) {
-        console.log(response.data);
-        res.json({ first: "first place" });
+      .then((response) => {
+        console.log("#############")
+        console.log(response);
+        console.log("#############")
+        res.status(200).send({ data: response.data });
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        console.err(error);
       });
   });
 });
@@ -40,8 +42,10 @@ function getCoords(address) {
   const requestUrl =
     GEOCODE_BASE_URL + "?address=" + encodedAddress + `&key=${API_KEY}`;
 
+    console.log(address);
+    console.log(encodedAddress);
   return axios.get(requestUrl).then((response) => {
-    console.log(response.data.geometry);
+    console.log(response.data.results);
     return response.data.results[0].geometry.location;
   });
   coords = {
