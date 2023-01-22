@@ -10,8 +10,8 @@ const app = express();
 
 app.get("/recommend", (req, res) => {
   let query = encodeURIComponent(req.query);
-  let address = req.address;
-  let radius = req.radius;
+  const address = req.address;
+  const radius = req.radius;
 
   getCoords(address).then((location) => {
     if(location == null) {
