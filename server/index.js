@@ -2,20 +2,33 @@ const express = require("express");
 const axios = require("axios");
 
 const PORT = 3000;
-const API_KEY = "AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M";
+const API_KEY = process.env.API_KEY;
 
 const app = express();
 
 app.get("/recommend", (req, res) => {
-  const BASE_URL = `https://maps.googleapis.com/maps/api/place/textsearch/json
-    ?location=42.3675294%2C-71.186966
-    &query=123%20main%20street
-    &radius=10000
-    &key=${API_KEY}`;
+  let query = encodeURIComponent(req.query);
+  let address = req.address;
 
-  return axios.get(BASE_URL).then((response) => {
-    console.log(repsonse);
-    res.json({ first: "first place" });
+  getCoords(address).then((location) => {
+    let loc = location;
+
+    const BASE_URL = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&location=${loc.lat}%2C${loc.lng}&radius=500&key=${API_KEY}`;
+
+    var config = {
+      method: "get",
+      url: BASE_URL,
+      headers: {},
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        res.json({ first: "first place" });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   });
 });
 
