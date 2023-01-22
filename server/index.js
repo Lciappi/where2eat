@@ -10,13 +10,34 @@ const GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 const TEXTSEARCH_BASE_URL =
   "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
+const ROOMS = {};
+
 const app = express();
 
 app.use(cors());
 
 var jsonParser = bodyParser.json();
 
+app.post("/vote", (req, res) => {
+  ROOMS[req.query.room][req.query.place][req.query.voteIdx] += 1;
+  res.status(200).send("success");
+});
+
 app.post("/recommend", jsonParser, (req, res) => {
+  if (req.query.room !== undefined) {
+    console.log("Room number: ", req.query.room);
+
+    res.type("application/json");
+    res.status(200);
+    return res.json(ROOMS[req.query.room]);
+  }
+
+  let room_number = Math.floor(Math.random() * 10000).toString();
+
+  let votes = { 0: [0, 0], 1: [0, 0], 2: [0, 0] };
+
+  console.log("Creating room: ", room_number);
+
   res.type("application/json");
   const query = req.query.query;
   const time = req.query.time;
@@ -50,6 +71,8 @@ app.post("/recommend", jsonParser, (req, res) => {
           topThree.places[2].formatted_address,
         ]).then((durations) => {
           const cleanResponse = buildResponse(topThree, query, time, durations);
+          cleanResponse["room"] = room_number;
+          cleanResponse["votes"] = votes;
           res.type("application/json");
           res.status(200);
           return res.json(cleanResponse);
