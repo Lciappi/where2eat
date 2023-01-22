@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require("express");
 const axios = require("axios");
 
 const PORT = 3000;
-const API_KEY = "AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M";
+const API_KEY = process.env.API_KEY;
 
 const app = express();
 
