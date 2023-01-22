@@ -4,7 +4,7 @@ const PORT = 3000;
 
 const app = express();
 
-app.get("/recomend", (req, res) => {
+app.get("/recommend", (req, res) => {
   res.json({ first: "first place" });
 });
 
