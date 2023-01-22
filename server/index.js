@@ -10,6 +10,7 @@ const app = express();
 
 app.get("/recommend", (req, res) => {
   res.type("appliaction/json");
+  res.status(200);
   let query = encodeURIComponent(req.query);
   let address = req.address;
 
