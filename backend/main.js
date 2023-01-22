@@ -4,7 +4,7 @@ var service;
 var infowindow;
 
 var query;
-var time = 'December 17, 2020 03:24:00';
+var time = "December 17, 2020 03:24:00";
 var address;
 
 var coords;
@@ -19,7 +19,9 @@ async function getQuery() {
   address = document.currentScript.getAttribute("address");
   // time = document.currentScript.getAttribute("time");
 
-  await geocoder.geocode({ address: address }, function(results, status) {getCoords(results, status)});
+  await geocoder.geocode({ address: address }, function (results, status) {
+    getCoords(results, status);
+  });
 
   var location = new google.maps.LatLng(coords.lat, coords.lng);
 
@@ -41,8 +43,9 @@ async function getQuery() {
 
 async function searchResponse(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
-    const maxResults = (MAX_RESULTS > results.length)? results.length : MAX_RESULTS;
-    placesObj['places'] = [];
+    const maxResults =
+      MAX_RESULTS > results.length ? results.length : MAX_RESULTS;
+    placesObj["places"] = [];
 
     for (var i = 0; i < maxResults; i++) {
       var place = results[i];
@@ -58,7 +61,7 @@ async function getCoords(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
     coords = {
       lat: results[0].geometry.location.lat(),
-      lng: results[0].geometry.location.lng()
+      lng: results[0].geometry.location.lng(),
     };
   } else {
     // TODO: error handling
