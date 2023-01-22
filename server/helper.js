@@ -6,20 +6,33 @@ export function isOpen(place) {
   return place.opening_hours.open_now;
 }
 
-export function buildResponse(results, query, time) {
+export function buildResponse(results, query, time, durations) {
   let cleanResponse = {
     prompt: query,
     time: time,
   };
-  cleanResponse['places'] = trimPlaces(results.places);
+  cleanResponse["places"] = trimPlaces(results.places);
+
+  cleanResponse.places[0]["distance"] = durations.distances[0];
+  cleanResponse.places[1]["distance"] = durations.distances[1];
+  cleanResponse.places[2]["distance"] = durations.distances[2];
+
+  cleanResponse.places[0]["driving_duration"] = durations.driving_durations[0];
+  cleanResponse.places[1]["driving_duration"] = durations.driving_durations[1];
+  cleanResponse.places[2]["driving_duration"] = durations.driving_durations[2];
+
+  cleanResponse.places[0]["walking_duration"] = durations.walking_durations[0];
+  cleanResponse.places[1]["walking_duration"] = durations.walking_durations[1];
+  cleanResponse.places[2]["walking_duration"] = durations.walking_durations[2];
+
+  console.log(cleanResponse);
 
   return cleanResponse;
 }
 
 export function getTopThree(results) {
   var placesObj = { places: {} };
-  const max =
-    MAX_RESULTS > results.length ? results.length : MAX_RESULTS;
+  const max = MAX_RESULTS > results.length ? results.length : MAX_RESULTS;
   let currentLength = 0;
   let minRatedIndex = 0;
   let currPlace;
@@ -68,11 +81,10 @@ function trimPlace(place) {
   const trimmedPlace = {
     name: place.name,
     address: place.formatted_address,
-    distance: null,
     open_now: place.opening_hours.open_now,
     rating: place.rating,
     price_level: place.price_level,
-    photos: place.photos
+    photos: place.photos,
   };
   return trimmedPlace;
 }

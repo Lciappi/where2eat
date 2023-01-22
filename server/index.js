@@ -21,8 +21,8 @@ app.post("/recommend", jsonParser, (req, res) => {
   const query = req.query.query;
   const time = req.query.time;
   const address = req.query.address;
-  const radius = '500';
-  const encodedQuery = encodeURIComponent(query);  
+  const radius = "500";
+  const encodedQuery = encodeURIComponent(query);
 
   getCoords(address).then((location) => {
     if (location == null) {
@@ -42,18 +42,18 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     axios(config)
       .then(function (response) {
+        const journeyInfo = null;
         let topThree = getTopThree(response.data.results);
         getJourneyInfo(address, [
           topThree.places[0].formatted_address,
           topThree.places[1].formatted_address,
           topThree.places[2].formatted_address,
         ]).then((durations) => {
-          console.log("Durations: ", durations);
+          const cleanResponse = buildResponse(topThree, query, time, durations);
+          res.type("application/json");
+          res.status(200);
+          return res.json(cleanResponse);
         });
-        const cleanResponse = buildResponse(topThree, query, time);
-        res.type("application/json");
-        res.status(200);
-        return res.json(cleanResponse);
       })
       .catch((error) => {
         console.log(error);
