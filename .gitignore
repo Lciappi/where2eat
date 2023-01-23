@@ -3,4 +3,4 @@ frontend/.next/*
 frontend/node_modules/*
 node_modules/*
 server/.env
-frontend/.env
+frontend/.env.local
