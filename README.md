@@ -8,6 +8,8 @@ Our app allows users to enter a flexible text prompt describing what they’re c
 
 # Demo
 
+### Filling out form to create voting room
 <img width="1440" alt="Screen Shot 2023-01-22 at 16 22 44" src="https://user-images.githubusercontent.com/65511267/213948569-d075e99e-3dcb-4498-838f-a94323ed2b17.png">
 
+### Voting options for users logging into voting room
 <img width="1440" alt="Screen Shot 2023-01-22 at 16 23 21" src="https://user-images.githubusercontent.com/65511267/213948577-be193c08-c17f-40ad-808e-935a456fde5b.png">
