@@ -13,3 +13,11 @@ Our app allows users to enter a flexible text prompt describing what they’re c
 
 ### Voting options for users logging into voting room
 <img width="1440" alt="Screen Shot 2023-01-22 at 16 23 21" src="https://user-images.githubusercontent.com/65511267/213948577-be193c08-c17f-40ad-808e-935a456fde5b.png">
+
+### Joining a group
+<img width="1440" alt="Screen Shot 2023-01-23 at 12 17 45 PM" src="https://user-images.githubusercontent.com/63064260/214141174-651becd6-0a2a-45ee-bbfb-890e3606804c.png">
+
+### Viewing Results
+<img width="1440" alt="Screen Shot 2023-01-23 at 12 20 09 PM" src="https://user-images.githubusercontent.com/63064260/214141542-4e9e4d7e-0480-40fe-8d4c-e147f363db0c.png">
+
+
