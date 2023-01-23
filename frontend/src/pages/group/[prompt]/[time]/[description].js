@@ -19,7 +19,7 @@ const Group = () => {
   useEffect(shoebc, [prompt, time, description]);
 
   async function shoebc() {
-    console.log('shoebc')
+    console.log([prompt, time, description])
     if(prompt === undefined || time === undefined || description === undefined) return;
 
     if(prompt == "-1"){
@@ -37,20 +37,22 @@ const Group = () => {
     const resp = await data.json();
     
     if(resp == undefined) return;
-    console.log(resp)
+
     setLibrary(resp);
   }
 
-  if(library == undefined) return (<div>Loading ...</div>)
+  console.log("library: ", library)
 
+  if(library == undefined) return (<div>Loading ...</div>)
+  
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} md={12}>
-          <Trophy />
+          <Trophy people={library.room}/>
       </Grid>
       <Grid item xs={12} md={12}>
         <div>          
-        <StatisticsCard />
+        <StatisticsCard data={prompt} />
         </div>
       </Grid>
 
@@ -58,13 +60,17 @@ const Group = () => {
       <Grid item xs={8}/>
 
       <Grid item xs={4}>
-        <CardImgTop place={0} resp={library}/>
+        <CardImgTop place={0} resp={library} room={group}/>
       </Grid>
       <Grid item  xs={4}>
-        <CardImgTop place={1} resp={library}/>
+        <CardImgTop place={1} resp={library} room={group}/>
       </Grid>
       <Grid item  xs={4}>
-        <CardImgTop place={2} resp={library}/>
+        <CardImgTop place={2} resp={library} room={group}/>
+      </Grid>
+      <Grid item  xs={12}>
+        <Button fullWidth={true} variant="contained" color="secondary" onClick={() => {router.push('/results/'+ time)}}>Show Results</Button>
+
       </Grid>
 
     </Grid>

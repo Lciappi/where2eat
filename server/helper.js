@@ -88,12 +88,23 @@ function trimPlace(place) {
 }
 
 export function getBest(places) {
-  let maxRating = 0;
-  let maxPlace = null;
+  let maxVotes = 0;
+  let maxPlaceIndex = 0;
   for (let i = 0; i <= MAX_RESULTS; i++) {
-    if (places[i].rating > maxRating) {
-      maxPlace = places[i];
+    if (places[i].votes[0] - places[i].votes[1] > maxVotes) {
+      maxPlaceIndex = i;
+      maxVotes = places[i].votes[0] - places[i].votes[1];
     }
   }
-  return maxPlace;
+  return maxPlaceIndex;
+}
+
+export function updateBest(places, best) {
+  for (let i = 0; i < places.length; i++) {
+    if (i == best) {
+      places[i]['isBest'] = true;
+    } else {
+      places[i]['isBest'] = false;
+    }
+  }
 }

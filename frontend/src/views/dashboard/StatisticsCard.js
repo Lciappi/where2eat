@@ -40,11 +40,15 @@ const salesData = [
   }
 ]
 
-const renderStats = () => {
+const renderStats = (when, addy, message) => {
   const router = useRouter()
   const { prompt, time, description } = router.query
 
-  const values = [time, description, prompt]
+  let values = [time, description, prompt]
+
+  if(prompt == "-1") {
+    return
+  }
 
   return salesData.map((item, index) => (
     <Grid item xs={12} sm={4} key={index}>
@@ -71,19 +75,22 @@ const renderStats = () => {
   ))
 }
 
-const StatisticsCard = () => {
+const StatisticsCard = ({data}) => {
   return (
-    <Card>
-      <CardHeader
-        title="Today's Options"
-      />
-      <CardContent sx={{ pt: theme => `${theme.spacing(0)} !important` }}>
-        <Grid container spacing={[5, 0]}>
-          {renderStats()}
-        </Grid>
-        
-      </CardContent>
-    </Card>
+    <div>
+      {data == "-1" ? <div></div> : <Card> 
+        <CardHeader
+          title="Details"
+        />
+        <CardContent sx={{ pt: theme => `${theme.spacing(0)} !important` }}>
+          <Grid container spacing={[5, 0]}>
+            {renderStats()}
+          </Grid>
+          
+        </CardContent>
+      </Card>}
+    </div>
+   
   )
 }
 

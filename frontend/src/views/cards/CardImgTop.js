@@ -11,26 +11,41 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 
-const CardImgTop = ({place, resp}) => {
+const CardImgTop = ({place, resp, room}) => {
   const [information, setInformation] = useState(resp);
+  const [used, setUsed] = useState(false);
 
-  const [restaurantName, setRestaurantName] = useState('')
-  const [distance, setDistance] = useState('')
-  const [address, setAddress] = useState('')
-  const [driving, setDriving] = useState('')
-  const [walking, setWalking] = useState('')
-  const [open, setOpen] = useState(false)
-  const [rating, setRating] = useState('')
+  const router = useRouter();
+  const { time } = router.query;
 
-  // console.log(resp.places[place].name)
 
-  // //setRestaurantName(resp.places[place].name);
-  // setDistance(resp.places[place].distance);
-  // setAddress(resp.places[place].address.split(", BC")[0]);
-  // setDriving(resp.places[place].driving_duration);
-  // setWalking(resp.places[place].walking_duration);
-  // setOpen(resp.places[place].open);
-  // setRating(resp.places[place].rating)
+  
+  async function like() {
+    setUsed(true)
+    let uri = `http://localhost:5050/vote?room=${encodeURIComponent(time)}&place=${encodeURIComponent(place)}&voteIdx=${encodeURIComponent(0)}`;
+    var data = await fetch(uri, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const resp = await data.json();
+    
+  }
+
+  async function dislike() {
+    setUsed(true)
+    console.log('vote for', place, time)
+
+    let uri = `http://localhost:5050/vote?room=${encodeURIComponent(time)}&place=${encodeURIComponent(place)}&voteIdx=${encodeURIComponent(1)}`;
+    var data = await fetch(uri, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const resp = await data.json();
+    
+  }
+  
 
   return (
     <Card>
@@ -38,7 +53,7 @@ const CardImgTop = ({place, resp}) => {
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
           {information.places[place].name}
         </Typography>
-        <Chip label={open ? "Open Now" : "Closed Now"} color={open ? "success" : "error"} />
+        <Chip label={information.places[place].open_now ? "Open Now" : "Closed Now"} color={information.places[place].open_now ? "success" : "error"} />
         <br />
         <br />
         <Typography variant='body2'>
@@ -57,12 +72,12 @@ const CardImgTop = ({place, resp}) => {
           Rating: {information.places[place].rating}
         </Typography>
         <br />
-        <Button variant="contained" endIcon={<SendIcon />} fullWidth={true}>
+        <Button disabled={used} variant="contained" endIcon={<SendIcon />} fullWidth={true} onClick={like}>
           Like
         </Button>
         <br />
         <br />
-        <Button  color="error" variant="contained" endIcon={<CloseIcon />} fullWidth={true}>
+        <Button disabled={used} color="error" variant="contained" endIcon={<CloseIcon />} fullWidth={true} onClick={dislike}>
           Dislike    
         </Button>
       </CardContent>

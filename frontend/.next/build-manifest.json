@@ -29,6 +29,21 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/create.js"
+    ],
+    "/group/[prompt]/[time]/[description]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/group/[prompt]/[time]/[description].js"
+    ],
+    "/join": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/join.js"
+    ],
+    "/results/[groupID]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/results/[groupID].js"
     ]
   },
   "ampFirstPages": []
