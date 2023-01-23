@@ -1,11 +1,14 @@
-import { getTopThree, buildResponse, getBest, updateBest} from "./helper.js";
+import dotenv from 'dotenv';
+import { getTopThree, buildResponse, getBest} from "./helper.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
 import cors from "cors";
 
+dotenv.config();
+
 const PORT = 5050;
-const API_KEY = "AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M";
+const API_KEY = process.env.API_KEY;
 const GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 const TEXTSEARCH_BASE_URL =
   "https://maps.googleapis.com/maps/api/place/textsearch/json";

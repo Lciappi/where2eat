@@ -7,11 +7,13 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import { debounce } from '@mui/material/utils';
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 // This key was created specifically for the demo in mui.com.
 // You need to create a new one for your application.
-const GOOGLE_MAPS_API_KEY = 'AIzaSyCxfqw7KcnonT2CCLi6Y7CfJpr2GULAJ_M';
+const GOOGLE_MAPS_API_KEY = process.env.API_KEY;
 
 function loadScript(src, position, id) {
   if (!position) {
