@@ -12,6 +12,7 @@ import { debounce } from '@mui/material/utils';
 // This key was created specifically for the demo in mui.com.
 // You need to create a new one for your application.
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+console.log(GOOGLE_MAPS_API_KEY);
 
 function loadScript(src, position, id) {
   if (!position) {
