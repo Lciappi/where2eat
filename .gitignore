@@ -1,6 +1,5 @@
 server/node_modules/*
 frontend/.next/*
 frontend/node_modules/*
-node_modules/*
 server/.env
 frontend/.env.local
