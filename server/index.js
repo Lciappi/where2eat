@@ -24,16 +24,7 @@ var jsonParser = bodyParser.json();
 app.get("/results", (req, res) => {
   res.type("application/json");
   res.status(200);
-  const best = getBest(ROOMS[req.query.room].places);
-  for (let i = 0; i < 3; i++) {
-    if (i == best) {
-      ROOMS[req.query.room].places[i]['isBest'] = true;
-    } else {
-      ROOMS[req.query.room].places[i]['isBest'] = false;
-    }
-  }
-  
-  console.log(ROOMS[req.query.room]);
+  getBest(ROOMS[req.query.room].places);
   return res.json(ROOMS[req.query.room]);
 });
 
@@ -79,7 +70,6 @@ app.post("/recommend", jsonParser, (req, res) => {
 
     axios(config)
       .then(function (response) {
-        const journeyInfo = null;
         let topThree = getTopThree(response.data.results);
         getJourneyInfo(address, [
           topThree.places[0].formatted_address,
@@ -88,9 +78,6 @@ app.post("/recommend", jsonParser, (req, res) => {
         ]).then((durations) => {
           const cleanResponse = buildResponse(topThree, query, time, durations);
           cleanResponse["room"] = room_number;
-          cleanResponse.places[0]["votes"] = [0, 0];
-          cleanResponse.places[1]["votes"] = [0, 0];
-          cleanResponse.places[2]["votes"] = [0, 0];
           res.type("application/json");
           res.status(200);
           ROOMS[room_number] = cleanResponse;
@@ -140,25 +127,21 @@ function getJourneyInfo(orig, dests) {
 
   return axios(config_driving)
     .then(function (resp_drive) {
-      let dur1 = resp_drive.data.rows[0].elements[0].duration.text;
-      let dur2 = resp_drive.data.rows[0].elements[1].duration.text;
-      let dur3 = resp_drive.data.rows[0].elements[2].duration.text;
-
-      let dist1 = resp_drive.data.rows[0].elements[0].distance.text;
-      let dist2 = resp_drive.data.rows[0].elements[1].distance.text;
-      let dist3 = resp_drive.data.rows[0].elements[2].distance.text;
-
-      let driving_durs = [dur1, dur2, dur3];
-      let dists = [dist1, dist2, dist3];
+      const drivingDurations = [];
+      const distances = [];
+      for (let i = 0; i < 3; i++) {
+        drivingDurations.push(resp_drive.data.rows[0].elements[i].duration.text);
+        distances.push(resp_drive.data.rows[0].elements[i].distance.text);
+      }
       return axios(config_walking).then(function (resp_walk) {
-        let dur4 = resp_walk.data.rows[0].elements[0].duration.text;
-        let dur5 = resp_walk.data.rows[0].elements[1].duration.text;
-        let dur6 = resp_walk.data.rows[0].elements[2].duration.text;
-        let walking_durs = [dur4, dur5, dur6];
+        const walkingDurations = [];
+        for (let i = 0; i < 3; i++) {
+          walkingDurations.push(resp_walk.data.rows[0].elements[i].duration.text);
+        }
         return {
-          distances: dists,
-          driving_durations: driving_durs,
-          walking_durations: walking_durs,
+          distances: distances,
+          driving_durations: drivingDurations,
+          walking_durations: walkingDurations,
         };
       });
     })

@@ -13,17 +13,13 @@ export function buildResponse(results, query, time, durations) {
   };
   cleanResponse["places"] = trimPlaces(results.places);
 
-  cleanResponse.places[0]["distance"] = durations.distances[0];
-  cleanResponse.places[1]["distance"] = durations.distances[1];
-  cleanResponse.places[2]["distance"] = durations.distances[2];
-
-  cleanResponse.places[0]["driving_duration"] = durations.driving_durations[0];
-  cleanResponse.places[1]["driving_duration"] = durations.driving_durations[1];
-  cleanResponse.places[2]["driving_duration"] = durations.driving_durations[2];
-
-  cleanResponse.places[0]["walking_duration"] = durations.walking_durations[0];
-  cleanResponse.places[1]["walking_duration"] = durations.walking_durations[1];
-  cleanResponse.places[2]["walking_duration"] = durations.walking_durations[2];
+  for (let i = 0; i <= MAX_RESULTS; i++) {
+    cleanResponse.places[i]["distance"] = durations.distances[i];
+    cleanResponse.places[i]["driving_duration"] = durations.driving_durations[i];
+    cleanResponse.places[i]["walking_duration"] = durations.walking_durations[i];
+    cleanResponse.places[i]["votes"] = [0, 0];
+    cleanResponse.places[i]["isBest"] = false;
+  }
 
   return cleanResponse;
 }
@@ -96,15 +92,14 @@ export function getBest(places) {
       maxVotes = places[i].votes[0] - places[i].votes[1];
     }
   }
+  updateBest(places, maxPlaceIndex);
   return maxPlaceIndex;
 }
 
-export function updateBest(places, best) {
-  for (let i = 0; i < places.length; i++) {
+function updateBest(places, best) {
+  for (let i = 0; i <= MAX_RESULTS; i++) {
     if (i == best) {
-      places[i]['isBest'] = true;
-    } else {
-      places[i]['isBest'] = false;
+      places[i].isBest = true;
     }
   }
 }
