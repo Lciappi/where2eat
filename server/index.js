@@ -33,7 +33,7 @@ app.post("/vote", (req, res) => {
   res.status(200).send("success");
 });
 
-app.post("/recommend", jsonParser, (req, res) => {
+app.post("/create", jsonParser, (req, res) => {
   if (req.query.room != "-1") {
     console.log("Room number: ", req.query.room);
 
