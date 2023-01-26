@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { getTopThree, buildResponse, getBest} from "./helper.js";
+import { getTopThree, buildResponse, getBest, getFormattedAdresses} from "./helper.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
@@ -12,6 +12,7 @@ const API_KEY = process.env.API_KEY;
 const GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 const TEXTSEARCH_BASE_URL =
   "https://maps.googleapis.com/maps/api/place/textsearch/json";
+const DISTMTX_BASE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json";
 
 const ROOMS = {};
 
@@ -71,11 +72,7 @@ app.post("/create", jsonParser, (req, res) => {
     axios(config)
       .then(function (response) {
         let topThree = getTopThree(response.data.results);
-        getJourneyInfo(address, [
-          topThree.places[0].formatted_address,
-          topThree.places[1].formatted_address,
-          topThree.places[2].formatted_address,
-        ]).then((durations) => {
+        getJourneyInfo(address, topThree.places).then((durations) => {
           const cleanResponse = buildResponse(topThree, query, time, durations);
           cleanResponse["room"] = room_number;
           res.type("application/json");
@@ -90,38 +87,36 @@ app.post("/create", jsonParser, (req, res) => {
   });
 });
 
-function getCoords(address) {
+async function getCoords(address) {
   const encodedAddress = encodeURIComponent(address);
   const requestUrl =
     GEOCODE_BASE_URL + "?address=" + encodedAddress + `&key=${API_KEY}`;
 
-  return axios.get(requestUrl).then((response) => {
-    if (response.status != 200) {
-      return null;
-    } else {
-      return response.data.results[0].geometry.location;
-    }
-  });
+  const response = await axios.get(requestUrl);
+  if (response.status != 200) {
+    return null;
+  } else {
+    return response.data.results[0].geometry.location;
+  }
 }
 
-function getJourneyInfo(orig, dests) {
+function getJourneyInfo(orig, places) {
+  const dests = [];
+  getFormattedAdresses(places, dests);
+  
   var config_driving = {
     method: "get",
-    url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(
-      orig
-    )}&destinations=${encodeURIComponent(dests[0])}%7C${encodeURIComponent(
-      dests[1]
-    )}%7C${encodeURIComponent(dests[2])}&departure_time=now&key=${API_KEY}`,
+    url: DISTMTX_BASE_URL + `?origins=${encodeURIComponent(orig)}&destinations=`
+    + `${encodeURIComponent(dests[0])}%7C${encodeURIComponent(dests[1])}%7C`
+    + `${encodeURIComponent(dests[2])}&departure_time=now&key=${API_KEY}`,
     headers: {},
   };
 
   var config_walking = {
     method: "get",
-    url: `https://maps.googleapis.com/maps/api/distancematrix/json?mode=walking&origins=${encodeURIComponent(
-      orig
-    )}&destinations=${encodeURIComponent(dests[0])}%7C${encodeURIComponent(
-      dests[1]
-    )}%7C${encodeURIComponent(dests[2])}&departure_time=now&key=${API_KEY}`,
+    url: DISTMTX_BASE_URL + `?mode=walking&origins=${encodeURIComponent(orig)}&destinations=`
+    + `${encodeURIComponent(dests[0])}%7C${encodeURIComponent(dests[1])}%7C`
+    + `${encodeURIComponent(dests[2])}&departure_time=now&key=${API_KEY}`,
     headers: {},
   };
 

@@ -103,3 +103,9 @@ function updateBest(places, best) {
     }
   }
 }
+
+export function getFormattedAdresses(places, dests) {
+  for (let i = 0; i <= MAX_RESULTS; i++) {
+    dests.push(places[i].formatted_address);
+  }
+}
