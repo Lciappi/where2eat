@@ -26,7 +26,7 @@ const Group = () => {
       group = time;
     }
 
-    let uri = `http://localhost:5050/recommend?query=${encodeURIComponent(prompt)}&address=${encodeURIComponent(description)}&time=${encodeURIComponent(time)}&room=${encodeURIComponent(group)}`;
+    let uri = `http://localhost:5050/create?query=${encodeURIComponent(prompt)}&address=${encodeURIComponent(description)}&time=${encodeURIComponent(time)}&room=${encodeURIComponent(group)}`;
     var data = await fetch(uri, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
